@@ -5,7 +5,7 @@ import CustomButton from "./CustomButton";
 import ReactSelect from "./ReactSelect";
 
 interface HeroProps {
-  parsedData: any;
+  parsedData: { options: string[]; origin: string[] };
 }
 
 const Hero = ({ parsedData }: HeroProps) => {

@@ -2,7 +2,7 @@ export const searchOptionsLoader = async (searchType: any) => {
   const searchByName = "/medicine/list/products";
   const searchByCompositions = "/medicine/list/compositions";
   const res = await fetch(
-    `http://44.205.248.120:5000${
+    `http://44.201.109.201:5000${
       searchType === "name" ? searchByName : searchByCompositions
     }`,
     {
@@ -20,14 +20,37 @@ export const searchOptionsLoader = async (searchType: any) => {
     (obj: { modified_form: string; original_form: string[] }) =>
       obj.modified_form
   );
+  const compositionPOrigianlarsedData = JSON.parse(data.response_data).map(
+    (obj: { modified_form: string; original_form: string[] }) =>
+      obj.original_form
+  );
 
   if (searchType === "name") {
-    return nameParsedData;
+    return { options: nameParsedData, origin: null };
   } else if (searchType === "composition") {
-    return compositionParsedData;
+    return {
+      options: compositionParsedData,
+      origin: compositionPOrigianlarsedData,
+    };
   } else {
-    return undefined;
+    return { options: [], origin: [] };
   }
+};
+
+export const getCompositionInfo = async (product: string) => {
+  const res = await fetch(
+    `http://44.201.109.201:5000/medicine/composition/list?salts=${product}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const data = await res.json();
+  const parsedData = JSON.parse(data.response_data);
+
+  return parsedData;
 };
 
 export const updateSearchParams = (type: string, value: string) => {

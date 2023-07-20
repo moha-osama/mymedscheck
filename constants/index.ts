@@ -101,3 +101,15 @@ export const getYourMedication: {
     img: Delivery,
   },
 ];
+
+export const productNavLinks: {
+  title: string;
+  href: string;
+  isActive?: boolean;
+}[] = [
+  { title: "Prices", href: "/productInfo", isActive: true },
+  { title: "Uses", href: "/productInfo" },
+  { title: "Drug Info", href: "/productInfo" },
+  { title: "Side Effects", href: "/productInfo" },
+  { title: "Images", href: "/productInfo" },
+];

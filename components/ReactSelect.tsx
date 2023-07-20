@@ -1,126 +1,78 @@
 "use client";
 
 import React, { useState } from "react";
-import Select from "react-select";
+import Select from "./Select";
 import { useRouter } from "next/navigation";
-import { AsyncPaginate } from "react-select-async-paginate";
+import { useSearchParams } from "next/navigation";
 import { AiOutlineSearch } from "react-icons/ai";
 import { updateSearchParams } from "@/utils";
-import { ActionMeta } from "react-select";
-import { SingleValue } from "react-select";
 
 interface ReactSelectProps {
-  products?: any;
+  products: { options: string[]; origin: string[] };
 }
 
-type OptionType = {
-  value: string;
-  label: string;
-};
-
 const ReactSelect = ({ products }: ReactSelectProps) => {
+  console.log(products);
   const router = useRouter();
-
-  const optionsList: { label: string; value: string }[] = [
-    { label: "Name", value: "name" },
-    { label: "Composition", value: "composition" },
-  ];
-  const style = {
-    control: (styles, { isDisabled }) => ({
-      ...styles,
-      background: "#cededf",
-      width: "10rem",
-      border: "none",
-    }),
-    option: (styles, { isFocused }) => {
-      return {
-        ...styles,
-        backgroundColor: isFocused ? "#0B7A72" : undefined,
-        color: isFocused ? "white" : "#69727A",
-        cursor: "pointer",
-      };
-    },
-    dropdownIndicator(base, props) {
-      let changes = { color: "#085C60" };
-      return Object.assign(base, changes);
-    },
-  };
-  const customStyles = {
-    control: (provided: any, state: any) => ({
-      ...provided,
-      border: "none",
-      boxShadow: null,
-      width: "30rem",
-      margin: "0 0 0 2rem",
-      cursor: state.isDisabled ? "not-allowed" : "pointer",
-    }),
-    option: (provided: any, state: any) => ({
-      ...provided,
-      backgroundColor: state.isFocused ? "#3699FF" : null,
-      color: state.isFocused ? "white" : null,
-    }),
-    dropdownIndicator(provided: any, state: any) {
-      let changes = { color: "#085C60" };
-      return Object.assign(provided, changes);
-    },
+  const [input, setInput] = useState<string>("");
+  const searchParams = useSearchParams();
+  const option = searchParams.get("option");
+  const searchChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value);
   };
 
-  const [search, setSearch] = useState<any>();
-  const [searchType, setSearchType] = useState(undefined);
-  const [data, setData] = useState(products);
+  const optionClickHandler = (event: React.MouseEvent<HTMLLIElement>) => {
+    const clickedItem = event.currentTarget.textContent;
 
-  const searchHandler = (
-    newValue: SingleValue<string>,
-    actionMeta: ActionMeta<string>
-  ) => {
-    setSearch(newValue);
-  };
-
-  const selectTypeHandler = (
-    value: any,
-    actionMeta: ActionMeta<OptionType>
-  ) => {
-    setSearchType(value);
-    if (value) {
-      const newPathName = updateSearchParams("option", value.value);
-      router.push(newPathName);
-    }
-  };
-  const loadOptions = async (search: string, loadedOptions: any) => {
-    const filteredData = data.filter((item: string) =>
-      item.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
+    const originalFormIndex = products.options.findIndex(
+      (item) => item === clickedItem
     );
-    const options = filteredData.map((item: string) => ({
-      value: item.replace(/\s+/g, ""),
-      label: item,
-    }));
-    return { options: options, hasMore: false };
+    const [originalForm]: any = products.origin[originalFormIndex];
+
+    const newPathName = updateSearchParams("search", originalForm || "");
+    router.push(`/product/${originalForm}${newPathName}`);
   };
 
   return (
     <div className="flex bg-[white] rounded-l-lg">
-      <div className="flex items-center pl-2">
-        <Select
-          instanceId="select"
-          placeholder="Search by..."
-          styles={style}
-          options={optionsList}
-          value={searchType}
-          onChange={selectTypeHandler}
-        />
-      </div>
       <div className="relative flex items-center">
-        <AiOutlineSearch className="text-[#7A7A7A] text-2xl absolute left-2 top-[50%] translate-y-[-50%]" />
-        <AsyncPaginate
-          isSearchable
-          loadOptions={loadOptions}
-          instanceId="search"
-          placeholder="what are you looking for ?"
-          styles={customStyles}
-          value={search}
-          onChange={searchHandler}
-          isDisabled={!searchType}
-        />
+        <Select />
+        <div>
+          <AiOutlineSearch className="text-[#7A7A7A] text-xl absolute left-[10.7rem] top-[50%] translate-y-[-50%]" />
+          <input
+            placeholder="Enter a medication"
+            type="text"
+            className="w-[30rem] h-[3rem] px-8 focus:outline-none disabled:cursor-not-allowed"
+            value={input}
+            onChange={searchChangeHandler}
+            disabled={!option}
+          />
+        </div>
+        {input.trim() !== "" && (
+          <div className="absolute top-[3.2rem] left-[10rem]">
+            {products?.options.filter((item: string) => item.startsWith(input))
+              .length > 0 ? (
+              <ul className="bg-white rounded-lg max-h-[20rem] overflow-y-scroll min-w-[30rem] flex flex-col justify-start">
+                {products.options
+                  .filter((item: string) => item.startsWith(input))
+                  .map((item) => (
+                    <li
+                      value={item.replace(/\s+/g, "")}
+                      onClick={optionClickHandler}
+                      key={item}
+                      className="px-4 py-3 border-b border-gray-500 last:border-0 text-[#7A7A7A] hover:cursor-pointer hover:bg-[#085C60] hover:text-white"
+                    >
+                      {item}
+                    </li>
+                  ))}
+              </ul>
+            ) : (
+              <p className="bg-white rounded-lg max-h-[20rem] min-w-[30rem] left-0 flex items-center justify-center px-4 py-3 text-[#7A7A7A]">
+                No items found.
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

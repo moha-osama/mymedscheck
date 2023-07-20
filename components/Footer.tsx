@@ -60,12 +60,12 @@ const Footer = () => {
         <div className="flex items-center">
           <nav className="flex gap-[3rem]">
             {footerLinks.map((item) => (
-              <div className="flex flex-col gap-2">
+              <div key={item.title} className="flex flex-col gap-2">
                 <ul className="text-lg font-bold leading-normal">
                   {item.title}
                 </ul>
                 {item.links.map((item) => (
-                  <Link href={item.href}>
+                  <Link key={item.title} href={item.href}>
                     <li className="list-none text-[1rem] font-[400] leading-normal">
                       {item.title}
                     </li>

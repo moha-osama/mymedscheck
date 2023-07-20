@@ -7,13 +7,15 @@ import GuideSection from "@/components/GuideSection";
 import { searchOptionsLoader } from "@/utils";
 
 export default async function Home({ searchParams }: any) {
-  const data = await searchOptionsLoader(searchParams.option || null);
+  const data = await searchOptionsLoader(
+    searchParams.option || { options: [], origin: [] }
+  );
   return (
     <main>
       {/* <Banner /> */}
       <Hero parsedData={data} />
       <GuideSection />
-      <section className="my-8">
+      <section className="mt-8">
         <div className="flex flex-col justify-center text-center maxWidth">
           <h1 className="text-[#064B45] text-4xl font-bold my-8">
             Two ways to get your medication
@@ -46,7 +48,7 @@ export default async function Home({ searchParams }: any) {
           </div>
         </div>
       </section>
-      {/* <MobileApp /> */}
+      <MobileApp />
     </main>
   );
 }

@@ -15,7 +15,10 @@ const RecentSearches = () => {
       </h1>
       <ul className="flex gap-3">
         {Searches.map((item) => (
-          <div className="flex items-center bg-[#ffffff40] px-2 py-1 w-fit hover:bg-[#ffffff80] cursor-default gap-2">
+          <div
+            key={item.item}
+            className="flex items-center bg-[#ffffff40] px-2 py-1 w-fit hover:bg-[#ffffff80] cursor-default gap-2"
+          >
             <li className="text-sm">{item.item}</li>
             <span className="hover:cursor-pointer">
               <AiOutlineClose />
