@@ -3,47 +3,90 @@
 import React, { useState } from "react";
 import Select from "./Select";
 import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
 import { AiOutlineSearch } from "react-icons/ai";
 import { updateSearchParams } from "@/utils";
+import CustomButton from "./CustomButton";
 
 interface ReactSelectProps {
   products: { options: string[]; origin: string[] };
+  searchError: boolean;
+  setSearchError: (x: boolean) => void;
 }
 
-const ReactSelect = ({ products }: ReactSelectProps) => {
+const ReactSelect = ({ products, setSearchError }: ReactSelectProps) => {
   const router = useRouter();
+
   const [input, setInput] = useState<string>("");
-  const searchParams = useSearchParams();
-  const option = searchParams.get("option");
+  const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
+
+  const [select, setSelect] = useState<string | undefined>();
+
   const searchChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
 
+  const addItemToLocalStorage = (originalForm: string) => {
+    const recentsArrStr = localStorage.getItem("recent-searches");
+    let recents = [];
+    if (recentsArrStr) {
+      recents = JSON.parse(recentsArrStr);
+    }
+    recents.push(originalForm);
+    if (recents.length > 10) {
+      recents = recents.slice(-10);
+    }
+    const recentsArrStrUpdated = JSON.stringify(recents);
+    localStorage.setItem("recent-searches", recentsArrStrUpdated);
+  };
+
   const optionClickHandler = (event: React.MouseEvent<HTMLLIElement>) => {
     const clickedItem = event.currentTarget.textContent;
-
     const originalFormIndex = products.options.findIndex(
       (item) => item === clickedItem
     );
+    if (!products.origin) router.push(`/not-found`);
+    const [originalForm]: any = products.origin[originalFormIndex];
+
+    addItemToLocalStorage(originalForm);
+
+    const newPathName = updateSearchParams("search", originalForm || "");
+    router.push(`/product/${originalForm}${newPathName}`);
+  };
+
+  const searchClickHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    if (select === undefined || input.trim() === "") {
+      setSearchError(true);
+      return;
+    }
+    const originalFormIndex = products.options.findIndex(
+      (item) => item === input
+    );
+    if (!originalFormIndex || originalFormIndex < 0) router.push(`/not-found`);
     const [originalForm]: any = products.origin[originalFormIndex];
     const newPathName = updateSearchParams("search", originalForm || "");
     router.push(`/product/${originalForm}${newPathName}`);
   };
 
   return (
-    <div className="flex bg-[white] rounded-l-lg">
-      <div className="relative flex items-center">
-        <Select />
+    <div className="flex">
+      <div className="relative flex items-center bg-[white] rounded-l-lg">
+        <Select
+          menuIsOpen={menuIsOpen}
+          setMenuIsOpen={setMenuIsOpen}
+          select={select}
+          setSelect={setSelect}
+        />
         <div className="relative flex items-center">
           <AiOutlineSearch className="text-[#7A7A7A] text-xl absolute left-[0.5rem]" />
           <input
+            onFocus={() => setMenuIsOpen(false)}
             placeholder="Enter a medication"
             type="text"
             className="md:w-[30rem] w-[10rem] h-[3rem] pl-8 placeholder:text-xs md:placeholder:text-sm focus:outline-none disabled:cursor-not-allowed disabled:bg-transparent"
             value={input}
             onChange={searchChangeHandler}
-            disabled={!option}
+            disabled={!select}
           />
         </div>
         {input.trim() !== "" && (
@@ -72,6 +115,11 @@ const ReactSelect = ({ products }: ReactSelectProps) => {
           </div>
         )}
       </div>
+      <CustomButton
+        onClick={searchClickHandler}
+        title="Search"
+        style="rounded-r-lg font-bold px-[24px] py-[12px]"
+      />
     </div>
   );
 };

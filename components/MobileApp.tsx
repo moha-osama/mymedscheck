@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const MobileApp = () => {
   return (
-    <section className="mt-12 bg-white md:px-24 ">
+    <section className="mt-12 bg-white md:px-24 pt-8 md:py-0">
       <div className="flex flex-col md:flex-row justify-between h-[40rem] md:h-[35rem] maxWidth">
         <div className="flex-1 flex flex-col justify-center gap-6">
           <h1 className="text-[#074C47] text-2xl md:3xl lg:text-4xl font-bold tracking-[-0.03125rem]">
@@ -22,7 +22,7 @@ const MobileApp = () => {
             <Image src="/google-play.png" width={250} height={5} alt="" />
           </div>
         </div>
-        <div className="flex-1 scale-75 md:scale-100">
+        <div className="flex-1  md:scale-100">
           <div className="relative h-full w-full">
             <Image
               width={500}

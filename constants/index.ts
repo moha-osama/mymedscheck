@@ -3,8 +3,8 @@ import { StaticImageData } from "next/image";
 import searchImg from "../public/guide/search.jpg";
 import listImg from "../public/guide/check.png";
 import walletImg from "../public/guide/wallet.jpg";
-import localPharmacy from "../public/local-pharmacy.png";
-import Delivery from "../public/deliveryy.jpg";
+import localPharmacy from "../public/local-pharmacy1.png";
+import Delivery from "../public/deliveryy1.png";
 
 export const navLinks: { title: string; href: string }[] = [
   { title: "Help", href: "/help" },

@@ -6,15 +6,26 @@ import { useSearchParams } from "next/navigation";
 import { updateSearchParams } from "@/utils";
 import { useRouter } from "next/navigation";
 
+interface SelectProps {
+  menuIsOpen: boolean;
+  setMenuIsOpen: (x: boolean) => void;
+  select: string | undefined;
+  setSelect: (select: string | undefined) => void;
+}
+
 const optionsList: { label: string; value: string }[] = [
   { label: "Medication Name", value: "name" },
   { label: "Medication Composition", value: "composition" },
 ];
 
-const Select = () => {
+const Select = ({
+  menuIsOpen,
+  setMenuIsOpen,
+  select,
+  setSelect,
+}: SelectProps) => {
   const router = useRouter();
-  const [select, setSelect] = useState<string | undefined>();
-  const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
+
   const searchParams = useSearchParams();
   const option = searchParams.get("option");
 
@@ -48,7 +59,7 @@ const Select = () => {
               key={item.value}
               value={item.value}
               onClick={selectChangeHandler}
-              className="h-12 flex justify-between items-center px-3 hover:bg-[#085C60] hover:text-white text-gray-500 hover:cursor-pointer"
+              className="h-12 flex justify-between items-center px-3 hover:bg-[#085C60] hover:text-white text-gray-500 hover:cursor-pointer first:hover:rounded-t-md last:hover:rounded-b-md"
             >
               {item.label}
             </li>

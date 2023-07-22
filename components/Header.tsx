@@ -17,7 +17,7 @@ function Header() {
   const [mobileMenu, setMobileMenu] = useState<boolean>(false);
   return (
     <header
-      className={`w-full h-[80px] bg-white flex items-center z-20 sticky top-0 transition-transform duration-300 ${
+      className={`w-full h-[80px] bg-white flex items-center z-[99] sticky top-0 transition-transform duration-300 ${
         scrollDirection && "translate-y-[-6rem]"
       }`}
     >
