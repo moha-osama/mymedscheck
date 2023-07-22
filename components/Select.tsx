@@ -31,6 +31,7 @@ const Select = ({
 
   const selectChangeHandler = (event: React.MouseEvent<HTMLLIElement>) => {
     const value = event.currentTarget.getAttribute("value") || "";
+    setMenuIsOpen(false);
     setSelect(value);
     const newPathName = updateSearchParams("option", value);
     router.push(newPathName);

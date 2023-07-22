@@ -16,7 +16,7 @@ export const searchOptionsLoader = async (searchType: any) => {
   const searchByName = "/medicine/list/products";
   const searchByCompositions = "/medicine/list/compositions";
   const res = await fetch(
-    `http://52.91.28.140:5000${
+    `http://${process.env.API_IPV4_ADDRESS}:5000${
       searchType === "name" ? searchByName : searchByCompositions
     }`,
     {
@@ -73,7 +73,7 @@ export const searchOptionsLoader = async (searchType: any) => {
 export const getCompositionInfo = async (product: string) => {
   const encodedSalts = encodeURIComponent(product);
   const res = await fetch(
-    `http://52.91.28.140:5000/medicine/composition/list?salts=${encodedSalts}`,
+    `http://${process.env.API_IPV4_ADDRESS}:5000/medicine/composition/list?salts=${encodedSalts}`,
     {
       method: "GET",
       headers: {
@@ -100,7 +100,7 @@ export const updateSearchParams = (type: string, value: string) => {
 export const getProductDetails = async (product: string) => {
   const encodedSalts = encodeURIComponent(product);
   const res = await fetch(
-    `http://52.91.28.140:5000/medicine/name/details/${encodedSalts}`,
+    `http://${process.env.API_IPV4_ADDRESS}:5000/medicine/name/details/${encodedSalts}`,
     {
       method: "GET",
       headers: {
