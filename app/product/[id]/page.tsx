@@ -8,12 +8,13 @@ import { getCompositionInfo } from "@/utils";
 const page = async ({ searchParams }: any) => {
   const product = searchParams.search;
   const data = await getCompositionInfo(product);
+
   return (
     <div>
       <ProductPrview />
-      <section className="relative flex flex-col bg-white my-4 py-4">
+      <section className="relative flex flex-col bg-white my-4 py-12">
         <nav className="absolute top-[-1.5rem] productNav w-[38rem] px-[0.5rem] h-[3.5rem] left-[50%] translate-x-[-50%]">
-          <ul className="flex h-full items-center justify-center gap-[0.5rem]">
+          <ul className="flex h-full items-center justify-start gap-[0.5rem]">
             {productNavLinks.map((item) => (
               <li
                 key={item.title}
@@ -27,7 +28,7 @@ const page = async ({ searchParams }: any) => {
           </ul>
         </nav>
         <CustomizeSteps />
-        <div className="flex flex-col gap-[3rem] py-12">
+        <div className="flex flex-col py-12">
           <List
             title="Home Delivery"
             subTitle="Buy online and have it delivered to your home"

@@ -15,19 +15,18 @@ export const searchOptionsLoader = async (searchType: any) => {
 
   const data = await res.json();
 
-  const nameParsedData = JSON.parse(data.response_data);
-  const compositionParsedData = JSON.parse(data.response_data).map(
-    (obj: { modified_form: string; original_form: string[] }) =>
-      obj.modified_form
-  );
-  const compositionPOrigianlarsedData = JSON.parse(data.response_data).map(
-    (obj: { modified_form: string; original_form: string[] }) =>
-      obj.original_form
-  );
-
   if (searchType === "name") {
+    const nameParsedData = JSON.parse(data.response_data);
     return { options: nameParsedData, origin: null };
   } else if (searchType === "composition") {
+    const compositionParsedData = JSON.parse(data.response_data).map(
+      (obj: { modified_form: string; original_form: string[] }) =>
+        obj.modified_form
+    );
+    const compositionPOrigianlarsedData = JSON.parse(data.response_data).map(
+      (obj: { modified_form: string; original_form: string[] }) =>
+        obj.original_form
+    );
     return {
       options: compositionParsedData,
       origin: compositionPOrigianlarsedData,
@@ -38,6 +37,7 @@ export const searchOptionsLoader = async (searchType: any) => {
 };
 
 export const getCompositionInfo = async (product: string) => {
+  console.log(product);
   const encodedSalts = encodeURIComponent(product);
   const res = await fetch(
     `http://52.91.28.140:5000/medicine/composition/list?salts=${encodedSalts}`,

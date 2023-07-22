@@ -7,15 +7,6 @@ import Image from "next/image";
 import { guideSteps } from "@/constants";
 
 const GuideSection = () => {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  useEffect(() => {
-    function handleResize() {
-      setWindowWidth(window.innerWidth);
-    }
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   return (
     <section>
       <div className="flex items-center justify-around max-w-[80rem] mx-auto my-0 px-4">
@@ -51,7 +42,7 @@ const GuideSection = () => {
                 item.id % 2 === 1 ? "bg-white" : "bg-[#87C6EC]"
               } py-8 md:py-0`}
             >
-              {item.id % 2 === 1 && windowWidth > 768 ? (
+              {item.id % 2 === 1 ? (
                 <div className="flex flex-col items-center md:flex-row justify-around maxWidth">
                   <div className="flex flex-col items-start justify-center max-w-[30rem]">
                     <h1 className="text-black font-[600] text-[18px] md:text-[2rem]">

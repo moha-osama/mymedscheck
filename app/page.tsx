@@ -10,6 +10,7 @@ export default async function Home({ searchParams }: any) {
   const data = await searchOptionsLoader(
     searchParams.option || { options: [], origin: [] }
   );
+  console.log(data);
   return (
     <main>
       <Hero parsedData={data} />

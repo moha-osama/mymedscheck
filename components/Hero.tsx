@@ -10,7 +10,7 @@ interface HeroProps {
 
 const Hero = ({ parsedData }: HeroProps) => {
   return (
-    <div className="h-[300px]">
+    <div className="h-[480px]">
       <div className="relative w-full h-full">
         <Image
           src="/hero2.jpg"

@@ -5,7 +5,7 @@ import { BiEditAlt } from "react-icons/bi";
 
 const CustomizeSteps = () => {
   return (
-    <div className="flex flex-col justify-center py-[4rem] gap-[3rem] maxWidth">
+    <div className="flex flex-col justify-center py-[4rem] gap-[3rem]">
       <h1 className="text-2xl font-extrabold leading-normal text-center">
         Customize your savings on this prescription
       </h1>
