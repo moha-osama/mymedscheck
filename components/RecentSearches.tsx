@@ -1,5 +1,4 @@
 import React from "react";
-import { AiOutlineClose } from "react-icons/ai";
 
 const Searches = [
   { item: "diltiazem er tiazac" },
@@ -9,20 +8,22 @@ const Searches = [
 
 const RecentSearches = () => {
   return (
-    <div className=" flex flex-col w-full gap-4 px-24 ">
-      <h1 className="text-white font-bold text-lg leading-normal">
-        Recent Searches
-      </h1>
-      <ul className="flex gap-3">
+    <div className=" flex flex-col justify-center items-center w-full mx-auto gap-4 md:px-24">
+      <div className="flex items-center justify-between w-full">
+        <h1 className="text-white font-bold text-lg leading-normal">
+          Recent Searches
+        </h1>
+        <button className="px-1 text-white bg-[#085C60] text-[14px]">
+          Clear history
+        </button>
+      </div>
+      <ul className="flex items-start gap-3 w-full ">
         {Searches.map((item) => (
           <div
             key={item.item}
-            className="flex items-center bg-[#ffffff40] px-2 py-1 w-fit hover:bg-[#ffffff80] cursor-default gap-2"
+            className="flex bg-[#ffffff40] px-2 py-1 w-fit hover:bg-[#ffffff80] cursor-default gap-2"
           >
             <li className="text-sm">{item.item}</li>
-            <span className="hover:cursor-pointer">
-              <AiOutlineClose />
-            </span>
           </div>
         ))}
       </ul>

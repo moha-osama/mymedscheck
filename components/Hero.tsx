@@ -26,11 +26,11 @@ const Hero = ({ parsedData }: HeroProps) => {
 
         <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
           <div className="flex flex-col items-center gap-6">
-            <div className="w-[70rem] text-center flex flex-col">
-              <h1 className="text-[1.8rem] text-white font-extrabold">
+            <div className="w-[100%] text-center flex flex-col">
+              <h1 className="text-[1.2rem] md:text-[1.8rem] text-white font-extrabold">
                 Any medicine, anytime, anywhere
               </h1>
-              <p className="text-white text-[14px] font-[600] leading-7">
+              <p className="text-white text-[12px] md:text-[14px] font-[600] leading-7 w-[20rem] mx-auto my-0  md:w-full">
                 From the rarest to the most common medicine, will find it for
                 you at best prices
               </p>
@@ -42,9 +42,7 @@ const Hero = ({ parsedData }: HeroProps) => {
                 style="rounded-r-lg font-bold px-[24px] py-[12px]"
               />
             </form>
-            <div className="w-full px-24">
-              <RecentSearches />
-            </div>
+            <RecentSearches />
           </div>
         </div>
       </div>

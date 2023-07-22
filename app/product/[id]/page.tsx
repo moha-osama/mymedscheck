@@ -27,7 +27,7 @@ const page = async ({ searchParams }: any) => {
           </ul>
         </nav>
         <CustomizeSteps />
-        <div className="flex flex-col gap-[3rem]">
+        <div className="flex flex-col gap-[3rem] py-12">
           <List
             title="Home Delivery"
             subTitle="Buy online and have it delivered to your home"
@@ -35,15 +35,6 @@ const page = async ({ searchParams }: any) => {
             btnText="Buy online"
             data={data}
           />
-          {/* <List
-            title="Local Pharmacies"
-            subTitle="Choose a pharmacy to get a coupon"
-            location
-            popular
-            save
-            shipping={false}
-            btnText="Get free savings"
-          /> */}
         </div>
       </section>
     </div>

@@ -12,7 +12,6 @@ export default async function Home({ searchParams }: any) {
   );
   return (
     <main>
-      {/* <Banner /> */}
       <Hero parsedData={data} />
       <GuideSection />
       <section className="mt-8">
@@ -20,13 +19,13 @@ export default async function Home({ searchParams }: any) {
           <h1 className="text-[#064B45] text-4xl font-bold my-8">
             Two ways to get your medication
           </h1>
-          <div className="flex justify-around px-40">
+          <div className="flex flex-col md:flex-row gap-4 md:gap-8 items-center justify-bewtween mx-auto">
             {getYourMedication.map((item) => (
               <div
                 key={item.title}
-                className="flex flex-col items-center bg-white w-fit h-[30rem]"
+                className="flex flex-col items-center bg-white w-[23rem] md:w-fit h-[30rem]"
               >
-                <div className="relative w-[32rem] h-[20rem]">
+                <div className="relative w-full md:w-[32rem] h-[20rem] overflow-hidden">
                   <Image
                     src={item.img}
                     fill

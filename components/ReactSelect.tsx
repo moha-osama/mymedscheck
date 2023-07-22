@@ -12,7 +12,6 @@ interface ReactSelectProps {
 }
 
 const ReactSelect = ({ products }: ReactSelectProps) => {
-  console.log(products);
   const router = useRouter();
   const [input, setInput] = useState<string>("");
   const searchParams = useSearchParams();
@@ -28,7 +27,6 @@ const ReactSelect = ({ products }: ReactSelectProps) => {
       (item) => item === clickedItem
     );
     const [originalForm]: any = products.origin[originalFormIndex];
-
     const newPathName = updateSearchParams("search", originalForm || "");
     router.push(`/product/${originalForm}${newPathName}`);
   };
@@ -37,22 +35,22 @@ const ReactSelect = ({ products }: ReactSelectProps) => {
     <div className="flex bg-[white] rounded-l-lg">
       <div className="relative flex items-center">
         <Select />
-        <div>
-          <AiOutlineSearch className="text-[#7A7A7A] text-xl absolute left-[10.7rem] top-[50%] translate-y-[-50%]" />
+        <div className="relative flex items-center">
+          <AiOutlineSearch className="text-[#7A7A7A] text-xl absolute left-[0.5rem]" />
           <input
             placeholder="Enter a medication"
             type="text"
-            className="w-[30rem] h-[3rem] px-8 focus:outline-none disabled:cursor-not-allowed"
+            className="md:w-[30rem] w-[10rem] h-[3rem] pl-8 placeholder:text-xs md:placeholder:text-sm focus:outline-none disabled:cursor-not-allowed disabled:bg-transparent"
             value={input}
             onChange={searchChangeHandler}
             disabled={!option}
           />
         </div>
         {input.trim() !== "" && (
-          <div className="absolute top-[3.2rem] left-[10rem]">
+          <div className="absolute top-[3.2rem] left-[6rem] md:left-[10rem]">
             {products?.options.filter((item: string) => item.startsWith(input))
               .length > 0 ? (
-              <ul className="bg-white rounded-lg max-h-[20rem] overflow-y-scroll min-w-[30rem] flex flex-col justify-start">
+              <ul className="bg-white rounded-lg max-h-[20rem] overflow-y-scroll md:w-[30rem] w-[15rem] flex flex-col justify-start">
                 {products.options
                   .filter((item: string) => item.startsWith(input))
                   .map((item) => (
@@ -67,7 +65,7 @@ const ReactSelect = ({ products }: ReactSelectProps) => {
                   ))}
               </ul>
             ) : (
-              <p className="bg-white rounded-lg max-h-[20rem] min-w-[30rem] left-0 flex items-center justify-center px-4 py-3 text-[#7A7A7A]">
+              <p className="bg-white rounded-lg max-h-[20rem] md:w-[30rem] w-[15rem] left-0 flex items-center justify-center px-4 py-3 text-[#7A7A7A]">
                 No items found.
               </p>
             )}

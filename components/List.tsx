@@ -1,15 +1,11 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { BsFire } from "react-icons/bs";
 import Link from "next/link";
-
-const DUMMYDATA = [
-  { name: "diRX" },
-  { name: "HealthWarehOUSE" },
-  { name: "kRGORER" },
-  { name: "safeway", isPopular: true },
-];
+import ListItem from "./ListItem";
+import CustomButton from "./CustomButton";
+import { TbCoinRupee } from "react-icons/tb";
 
 interface ListProps {
   title: string;
@@ -19,102 +15,113 @@ interface ListProps {
   save?: boolean;
   shipping?: boolean;
   btnText: string;
-  data?: {
+  data: {
     exact_match: {
       composition: string[];
       result: { pharmacy_name: string; products: string[] }[];
     };
-    generic_match: {};
+    generic_match: {
+      composition: string[];
+      result: { pharmacy_name: string; products: string[] }[];
+    }[];
   };
 }
 
-type availableDataType = [
-  {
-    pharmacy_name: string;
-    products: {
-      composition: string;
-      offer_price: string;
-      product_name: string;
-      product_url: string;
-      quantity: string;
-      stock_value: string;
-    }[];
-  }
-];
+interface PharmacyProduct {
+  pharmacy_name: string;
+  products: Product[];
+}
 
-const List = ({
-  title,
-  subTitle,
-  location,
-  popular,
-  save,
-  btnText,
-  shipping,
-  data,
-}: ListProps) => {
-  const availableData: any = data?.exact_match.result.filter(
+interface Product {
+  product_name: string;
+  product_url: string;
+  offer_price: string;
+  quantity: string;
+  composition: string;
+}
+
+const List = ({ title, subTitle, save, btnText, data }: ListProps) => {
+  //
+
+  const exactMatchResult = data.exact_match.result.filter(
     (item) => item.products.length > 0
   );
+  const [genericMatchResult] = data.generic_match.map((item) =>
+    item.result.filter((prodItem) => prodItem.products.length > 0)
+  );
+  let genericMatchResultObjsArr: any = [];
+  const genericMatchResultObjs = genericMatchResult.forEach((obj) =>
+    genericMatchResultObjsArr.push(obj)
+  );
+  const allAvailableData = [...exactMatchResult, ...genericMatchResultObjsArr];
 
-  console.log(availableData);
+  const sample = allAvailableData.map((item) => {
+    return {
+      pharmacy_name: item.pharmacy_name,
+      products: item.products.slice(0, 1),
+    };
+  });
+
+  const [shownData, setShownData] = useState(sample);
+  const [isClick, setisClick] = useState(false);
+
+  const showMoreData = () => {
+    setShownData(allAvailableData);
+    setisClick(true);
+  };
+
   return (
-    <section className="flex flex-col w-[80rem] mx-auto my-0 border rounded-xl shadow-md">
-      <div className="flex flex-col  border-b-2 border-gray-600 p-4">
+    <section className="relative pb-24 flex flex-col w-[80rem] mx-auto my-0 border rounded-xl shadow-md ">
+      <div className="flex flex-col border-b-2 border-gray-600 p-4">
         <h1 className="font-[600] text-[24px]">{title}</h1>
         <p className="text-[16px] font-[400]">{subTitle}</p>
       </div>
       <ul className="flex flex-col px-4">
-        {availableData.map((item: any) => (
-          <li
-            key={item.products[0].product_url}
-            className="flex items-center border-b border-gray-400 last:border-b-0 py-4"
-          >
-            <div className="flex flex-grow gap-2">
-              <div className="relative h-8 w-8">
-                <Image
-                  src={`/home_delivery_logos/${item.pharmacy_name}.jpg`}
-                  fill
-                  alt="pharmacy logo"
-                  className="rounded-full"
-                />
-              </div>
-              <div className="flex flex-col">
-                <h2 className="text-[18px] font-normal">
-                  {item.pharmacy_name}
-                </h2>
-                {/* {shipping && (
-                  <p className="text-[14px] font-light">Free Shiping</p>
-                )} */}
-                {/* {popular && item.isPopular ? (
-                  <div className="flex items-center gap-2 bg-[#F2F3F4] rounded-full py-1 px-2 text-[12px]">
-                    <span className="text-[#E96201]">
-                      <BsFire />
-                    </span>
-                    <p>Most popular</p>
+        {shownData.map((item: { pharmacy_name: string; products: [] }, index) =>
+          item.products.map(
+            (prod: {
+              composition: string;
+              offer_price: any;
+              pharmacy_name: string;
+              product_name: string;
+              product_url: string;
+              quantity: string;
+              stock_value: null | string;
+            }) => (
+              <li key={Math.random()}>
+                <div className="flex items-center">
+                  <ListItem
+                    btnText={btnText}
+                    pharmacyName={item.pharmacy_name}
+                    offerPrice={prod.offer_price}
+                    productName={prod.product_name}
+                    productUrl={prod.product_url}
+                  />
+                </div>
+                {index === 0 && !isClick && (
+                  <div className="flex justify-center items-center border-b border-gray-500 text-black mt-3 pb-3">
+                    <p className="flex items-center gap-4 bg-[#FFF1B9] py-3 px-8 rounded-2xl font-bold text-[16px]">
+                      <span className="text-3xl font-light rounded-full border-black">
+                        <TbCoinRupee className="text-[#AE7F1B]" />
+                      </span>
+                      Save more with other brands of same composition
+                    </p>
                   </div>
-                ) : null} */}
-              </div>
-            </div>
-            <div className="flex items-center gap-8">
-              {/* <div className="text-[14px] text-gray-500 mr-[8rem]">
-                <p>
-                  <span className="line-through">$45</span> retail
-                </p>
-                <p>Save 76%</p>
-              </div> */}
-              <h1 className="text-[24px] font-bold">
-                <span className="text-xl font-[18px]">₹</span>
-                {item.products[0].offer_price}
-              </h1>
-              <Link href={item.products[0].product_url}>
-                <button className="border border-[#085C60] text-[#085C60] font-medium py-[0.5rem] px-[1rem] rounded-md text-[16px] hover:bg-[#085C60] hover:text-white">
-                  {btnText}
-                </button>
-              </Link>
-            </div>
-          </li>
-        ))}
+                )}
+              </li>
+            )
+          )
+        )}
       </ul>
+      {!isClick && (
+        <div className="absolute bottom-[-1rem] flex items-center flex-col gap-2 left-[50%] translate-x-[-50%]">
+          <CustomButton
+            onClick={showMoreData}
+            title="Load More"
+            style="px-3 py-2 rounded-md w-[12rem]"
+          />
+        </div>
+      )}
     </section>
   );
 };

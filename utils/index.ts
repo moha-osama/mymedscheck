@@ -2,7 +2,7 @@ export const searchOptionsLoader = async (searchType: any) => {
   const searchByName = "/medicine/list/products";
   const searchByCompositions = "/medicine/list/compositions";
   const res = await fetch(
-    `http://44.201.109.201:5000${
+    `http://52.91.28.140:5000${
       searchType === "name" ? searchByName : searchByCompositions
     }`,
     {
@@ -38,8 +38,9 @@ export const searchOptionsLoader = async (searchType: any) => {
 };
 
 export const getCompositionInfo = async (product: string) => {
+  const encodedSalts = encodeURIComponent(product);
   const res = await fetch(
-    `http://44.201.109.201:5000/medicine/composition/list?salts=${product}`,
+    `http://52.91.28.140:5000/medicine/composition/list?salts=${encodedSalts}`,
     {
       method: "GET",
       headers: {
@@ -47,6 +48,9 @@ export const getCompositionInfo = async (product: string) => {
       },
     }
   );
+  if (!res.ok) {
+    throw new Error("failed to fetch data");
+  }
   const data = await res.json();
   const parsedData = JSON.parse(data.response_data);
 

@@ -1,19 +1,39 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import CustomButton from "@/components/CustomButton";
 import { BsChevronDoubleDown } from "react-icons/bs";
 import Image from "next/image";
 import { guideSteps } from "@/constants";
 
 const GuideSection = () => {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    function handleResize() {
+      setWindowWidth(window.innerWidth);
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <section>
-      <div className="flex items-center justify-around maxWidth">
-        <h1 className="text-[#085C60] text-4xl font-bold leading-[3rem]">
+      <div className="flex items-center justify-around max-w-[80rem] mx-auto my-0 px-4">
+        <h1 className="text-[#085C60] font-bold text-xl md:text-3xl">
           Discover how to navigate our website <br />
-          and find your prescription with unbeatable deals.
+          <span className="hidden md:block">
+            and find your prescription with unbeatable deals.
+          </span>
         </h1>
-        <div className="relative w-[21.625rem] h-[14.41844rem] scale-[0.8]">
-          <Image src="/guide/group.png" fill alt="" />
+        <div className="relative">
+          <Image
+            src="/guide/group.png"
+            width={350}
+            height={500}
+            quality={100}
+            className="w-[10rem]"
+            alt=""
+          />
         </div>
       </div>
       <div className="flex flex-col items-center justify-center pb-6">
@@ -27,15 +47,17 @@ const GuideSection = () => {
           return (
             <div
               key={item.id}
-              className={`${item.id % 2 === 1 ? "bg-white" : "bg-[#87C6EC]"} `}
+              className={`${
+                item.id % 2 === 1 ? "bg-white" : "bg-[#87C6EC]"
+              } py-8 md:py-0`}
             >
-              {item.id % 2 === 1 ? (
-                <div className="flex justify-around maxWidth">
-                  <div className="hre flex flex-col items-start justify-center max-w-[30rem]">
-                    <h1 className="text-black font-[600] text-[2rem]">
+              {item.id % 2 === 1 && windowWidth > 768 ? (
+                <div className="flex flex-col items-center md:flex-row justify-around maxWidth">
+                  <div className="flex flex-col items-start justify-center max-w-[30rem]">
+                    <h1 className="text-black font-[600] text-[18px] md:text-[2rem]">
                       {item.title}
                     </h1>
-                    <p className="text-[#69727A] text-[600] text-lg max-w-[20rem]">
+                    <p className="text-[#69727A] text-[600] text-[16px] md:text-lg max-w-[20rem]">
                       {item.description}
                     </p>
                   </div>
@@ -44,15 +66,15 @@ const GuideSection = () => {
                   </div>
                 </div>
               ) : (
-                <div className="flex justify-around maxWidth">
+                <div className="flex flex-col items-center md:flex-row justify-around maxWidth">
                   <div className="relative w-[18rem] h-[18rem]">
                     <Image src={item.img} fill alt={item.title} />
                   </div>
-                  <div className="hre flex flex-col items-start justify-center max-w-[30rem]">
-                    <h1 className="text-black font-[600] text-[2rem]">
+                  <div className="flex flex-col items-start justify-center max-w-[30rem]">
+                    <h1 className="text-black font-[600] text-[18px] md:text-[2rem]">
                       {item.title}
                     </h1>
-                    <p className="text-[#69727A] text-[600] text-lg max-w-[20rem]">
+                    <p className="text-[#69727A] text-[600] text-[16px] md:text-lg max-w-[20rem]">
                       {item.description}
                     </p>
                   </div>

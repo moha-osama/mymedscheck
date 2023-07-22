@@ -6,8 +6,8 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#085C60] h-[30rem] text-white">
-      <div className="flex h-full justify-around">
+    <footer className="bg-[#085C60] h-[40rem] md:h-[30rem] text-white">
+      <div className="flex flex-col md:flex-row h-full justify-around">
         <div className="flex flex-col gap-6 justify-center">
           <div>
             <h1 className="text-2xl font-[900] leading-normal">
