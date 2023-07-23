@@ -24,43 +24,56 @@ export const searchOptionsLoader = async (searchType: any) => {
     status: "OK",
     status_code: "200",
   };
-  if (searchType === "name") {
-    if (!data.response_data) {
-      return {
-        options: [
-          "3a pan 40mg tablet",
-          "dopy plus tablet",
-          "3a pan d tablet",
-          "tobrasone eye drops",
-          "jocap 500mg tablets",
-          "brimo eye drops",
-          "broxin syrup 30ml",
-          "le one 5mg tablet",
-          "star 365",
-          "aceper tablet",
-        ],
-        origin: null,
-      };
-    } else {
-      const nameParsedData = JSON.parse(data.response_data);
-      return { options: nameParsedData, origin: null };
-    }
-  } else if (searchType === "composition") {
-    const compositionParsedData = JSON.parse(data.response_data).map(
-      (obj: { modified_form: string; original_form: string[] }) =>
-        obj.modified_form
-    );
-    const compositionPOrigianlarsedData = JSON.parse(data.response_data).map(
-      (obj: { modified_form: string; original_form: string[] }) =>
-        obj.original_form
-    );
-    return {
-      options: compositionParsedData,
-      origin: compositionPOrigianlarsedData,
-    };
-  } else {
-    return { options: [], origin: [] };
-  }
+  const compositionParsedData = JSON.parse(data.response_data).map(
+    (obj: { modified_form: string; original_form: string[] }) =>
+      obj.modified_form
+  );
+  const compositionPOrigianlarsedData = JSON.parse(data.response_data).map(
+    (obj: { modified_form: string; original_form: string[] }) =>
+      obj.original_form
+  );
+  return {
+    options: compositionParsedData,
+    origin: compositionPOrigianlarsedData,
+  };
+
+  // if (searchType === "name") {
+  //   if (!data.response_data) {
+  //     return {
+  //       options: [
+  //         "3a pan 40mg tablet",
+  //         "dopy plus tablet",
+  //         "3a pan d tablet",
+  //         "tobrasone eye drops",
+  //         "jocap 500mg tablets",
+  //         "brimo eye drops",
+  //         "broxin syrup 30ml",
+  //         "le one 5mg tablet",
+  //         "star 365",
+  //         "aceper tablet",
+  //       ],
+  //       origin: null,
+  //     };
+  //   } else {
+  //     const nameParsedData = JSON.parse(data.response_data);
+  //     return { options: nameParsedData, origin: null };
+  //   }
+  // } else if (searchType === "composition") {
+  //   const compositionParsedData = JSON.parse(data.response_data).map(
+  //     (obj: { modified_form: string; original_form: string[] }) =>
+  //       obj.modified_form
+  //   );
+  //   const compositionPOrigianlarsedData = JSON.parse(data.response_data).map(
+  //     (obj: { modified_form: string; original_form: string[] }) =>
+  //       obj.original_form
+  //   );
+  //   return {
+  //     options: compositionParsedData,
+  //     origin: compositionPOrigianlarsedData,
+  //   };
+  // } else {
+  //   return { options: [], origin: [] };
+  // }
 };
 
 export const getCompositionInfo = async (product: string) => {

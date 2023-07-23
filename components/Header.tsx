@@ -31,7 +31,9 @@ function Header() {
 
   return (
     <header
-      className={`w-full h-[80px] bg-white flex items-center z-[99] sticky top-0 transition-transform duration-300 shadow-md`}
+      className={`w-full h-[80px] bg-white flex items-center z-[99] sticky top-0 transition-transform duration-300 ${
+        scrollDirection && "translate-y-[-6rem]"
+      }`}
     >
       <Wrapper className="h-[60px] flex justify-between items-center">
         <Link href="/">
