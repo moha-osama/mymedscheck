@@ -15,11 +15,31 @@ interface ListProps {
   data: {
     exact_match: {
       composition: string[];
-      result: { pharmacy_name: string; products: string[] }[];
+      result: {
+        pharmacy_name: string;
+        products: {
+          product_name: string;
+          product_url: string;
+          offer_price: string;
+          quantity: string;
+          stock_value: string | null;
+          composition: string;
+        }[];
+      }[];
     };
     generic_match: {
-      composition: string[];
-      result: { pharmacy_name: string; products: string[] }[];
+      composition: string;
+      result: {
+        pharmacy_name: string;
+        products: {
+          product_name: string;
+          product_url: string;
+          offer_price: string;
+          quantity: string;
+          stock_value: string | null;
+          composition: string;
+        }[];
+      }[];
     }[];
   };
 }

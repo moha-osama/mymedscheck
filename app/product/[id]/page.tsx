@@ -3,14 +3,11 @@ import CustomizeSteps from "@/components/CustomizeSteps";
 import { productNavLinks } from "@/constants";
 import List from "@/components/List";
 import ProductPrview from "@/components/ProductPrview";
-import { getCompositionInfo, getProductDetails } from "@/utils";
+import { getCompositionInfo } from "@/utils";
 
 const page = async ({ searchParams }: any) => {
   const product = searchParams.search;
   const data = await getCompositionInfo(product);
-
-  const details = await getProductDetails(product);
-
   return (
     <div>
       <ProductPrview />
