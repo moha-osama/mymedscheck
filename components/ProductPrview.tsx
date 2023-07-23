@@ -20,12 +20,12 @@ const ProductPrview = () => {
       </div>
       <div className="flexflex-col md:justify-center gap-[1rem]">
         <div className="flex flex-col md:flex-row items-baseline gap-3">
-          <h1 className="font-extrabold leading-normal text-[2rem]">
+          <h1 className="font-extrabold leading-normal text-2xl sm:text-[2rem]">
             {searchParams.get("search")}
           </h1>
-          <h3 className="font-light text-lg">Bisoprolol / HCTZ</h3>
+          <h3 className="font-light text-md sm:text-lg">Bisoprolol / HCTZ</h3>
         </div>
-        <p className="font-light text-sm">Used for Hypertensions</p>
+        <p className="font-light text-xs sm:text-sm">Used for Hypertensions</p>
       </div>
     </div>
   );

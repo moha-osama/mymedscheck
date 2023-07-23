@@ -78,12 +78,12 @@ const ReactSelect = ({ products, setSearchError }: ReactSelectProps) => {
           setSelect={setSelect}
         />
         <div className="relative flex items-center">
-          <AiOutlineSearch className="text-[#7A7A7A] text-xl absolute left-[0.5rem]" />
+          <AiOutlineSearch className="text-[#7A7A7A] text-xl absolute left-[0.5rem] hidden sm:block" />
           <input
             onFocus={() => setMenuIsOpen(false)}
             placeholder="Enter a medication"
             type="text"
-            className="md:w-[30rem] w-[10rem] h-[3rem] pl-8 placeholder:text-xs md:placeholder:text-sm focus:outline-none disabled:cursor-not-allowed disabled:bg-transparent"
+            className="md:w-[30rem] sm:w-[20rem] w-[8rem] h-[3rem] pl-2 sm:pl-8 placeholder:text-xs md:placeholder:text-sm focus:outline-none disabled:cursor-not-allowed disabled:bg-transparent"
             value={input}
             onChange={searchChangeHandler}
             disabled={!select}
@@ -91,11 +91,14 @@ const ReactSelect = ({ products, setSearchError }: ReactSelectProps) => {
         </div>
         {input.trim() !== "" && (
           <div className="absolute top-[3.2rem] left-[6rem] md:left-[10rem]">
-            {products?.options.filter((item: string) => item.startsWith(input))
-              .length > 0 ? (
+            {products?.options.filter((item: string) =>
+              item.startsWith(input.toLocaleLowerCase())
+            ).length > 0 ? (
               <ul className="bg-white rounded-lg max-h-[20rem] overflow-y-scroll md:w-[30rem] w-[15rem] flex flex-col justify-start">
                 {products.options
-                  .filter((item: string) => item.startsWith(input))
+                  .filter((item: string) =>
+                    item.startsWith(input.toLocaleLowerCase())
+                  )
                   .map((item) => (
                     <li
                       value={item.replace(/\s+/g, "")}
@@ -118,7 +121,7 @@ const ReactSelect = ({ products, setSearchError }: ReactSelectProps) => {
       <CustomButton
         onClick={searchClickHandler}
         title="Search"
-        style="rounded-r-lg font-bold px-[24px] py-[12px]"
+        style="rounded-r-lg font-bold px-[12px] md:px-[24px] py-[12px] "
       />
     </div>
   );

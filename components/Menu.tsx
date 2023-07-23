@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { navLinks } from "@/constants";
 import CustomButton from "./CustomButton";
+import ReactSelect from "./ReactSelect";
 
 type MenuProps = {
   onShow: () => void;

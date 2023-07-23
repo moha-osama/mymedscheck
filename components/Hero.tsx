@@ -40,7 +40,7 @@ const Hero = ({ parsedData }: HeroProps) => {
 
           <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
             <div className="flex flex-col items-center gap-6 ">
-              <div className="w-[100%] text-center flex flex-col">
+              <div className="w-[100%] text-center items-center flex flex-col">
                 <h1 className="text-[1.2rem] md:text-[1.8rem] text-white font-extrabold">
                   Any medicine, anytime, anywhere
                 </h1>

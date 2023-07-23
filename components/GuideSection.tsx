@@ -9,7 +9,7 @@ import { guideSteps } from "@/constants";
 const GuideSection = () => {
   return (
     <section id="guide-section">
-      <div className="relative bg-white">
+      <div className="relative bg-white pt-[80px]">
         {guideSteps.map((item) => {
           return (
             <div

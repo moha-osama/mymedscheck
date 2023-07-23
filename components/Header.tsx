@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useScroll from "@/hooks/use-scoll";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,11 +15,23 @@ function Header() {
   const scrollDirection = useScroll();
   const [showCategroies, setShowCategroies] = useState<boolean>(false);
   const [mobileMenu, setMobileMenu] = useState<boolean>(false);
+  const [shown, setShown] = useState(false);
+
+  useEffect(() => {
+    function onScroll(): void {
+      let y: number = window.scrollY;
+      if (y >= 200) {
+        setShown(true);
+      } else {
+        setShown(false);
+      }
+    }
+    window.addEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <header
-      className={`w-full h-[80px] bg-white flex items-center z-[99] sticky top-0 transition-transform duration-300 ${
-        scrollDirection && "translate-y-[-6rem]"
-      }`}
+      className={`w-full h-[80px] bg-white flex items-center z-[99] sticky top-0 transition-transform duration-300 shadow-md`}
     >
       <Wrapper className="h-[60px] flex justify-between items-center">
         <Link href="/">
@@ -32,7 +44,7 @@ function Header() {
                 className="rounded-2xl"
               />
             </div>
-            <h1 className="text-[#085C60] text-2xl font-extrabold">
+            <h1 className="text-[#085C60] sm:text-2xl font-extrabold">
               MY MEDS CHECK
             </h1>
           </div>

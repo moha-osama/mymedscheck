@@ -41,7 +41,7 @@ const Select = ({
     <div className="relative flex items-center pl-1">
       <li
         onClick={() => setMenuIsOpen(!menuIsOpen)}
-        className="cursor-pointer flex items-center w-[6rem] md:w-[10rem] text-[#085C60] font-medium nd:gap-2 relative bg-[#b5cecf] h-[2.5rem] md:px-3 rounded-md"
+        className="cursor-pointer flex items-center justify-between px-2 w-[6rem] md:w-[10rem] text-[#085C60] font-medium nd:gap-2 relative bg-[#b5cecf] h-[2.5rem] md:px-3 rounded-md"
       >
         <p className="flex text-xs md:flex-grow md:text-[16px]">
           {option ? option : "Search by"}

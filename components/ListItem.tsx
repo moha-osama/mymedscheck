@@ -66,7 +66,7 @@ const ListItem = ({
         </div>
 
         <Link href={`${productUrl}`}>
-          <button className="border border-[#085C60] text-[#085C60] font-medium py-[0.5rem] md:px-[1rem] rounded-md text-[16px] hover:bg-[#085C60] hover:text-white">
+          <button className="border border-[#085C60] text-[#085C60] font-medium py-[0.5rem] px-[1rem] rounded-md text-[16px] hover:bg-[#085C60] hover:text-white">
             {btnText}
           </button>
         </Link>
