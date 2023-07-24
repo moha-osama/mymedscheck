@@ -23,12 +23,12 @@ function Menu({ onShow, onClose }: MenuProps) {
           </li>
         </Link>
       ))}
-      <div>
+      <Link href={"/contact?mode=partner-with-us"}>
         <CustomButton
           title="Partner with us"
           style="rounded-lg px-[1rem] py-[0.5rem]"
         />
-      </div>
+      </Link>
     </ul>
   );
 }

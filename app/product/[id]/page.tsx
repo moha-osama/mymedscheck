@@ -31,14 +31,22 @@ const page = async ({ searchParams }: any) => {
             Customize your savings on this prescription
           </h1>
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-8">
           <CustomizeSteps />
-          <List
-            title="Home Delivery"
-            subTitle="Buy online and have it delivered to your home"
-            btnText="Grab Deal"
-            data={data}
-          />
+          <div className="flex flex-col gap-12">
+            <List
+              title="Home Delivery"
+              subTitle="Buy online and have it delivered to your home"
+              btnText="Grab Deal"
+              data={data}
+            />
+            <List
+              title="Local Pharmcies"
+              subTitle="Choose a pharmacy to get a coupon"
+              btnText="Get Free Savings"
+              data={data}
+            />
+          </div>
         </div>
       </section>
     </div>

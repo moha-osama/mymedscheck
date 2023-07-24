@@ -88,7 +88,7 @@ const List = ({ title, subTitle, btnText, data }: ListProps) => {
   };
 
   return (
-    <section className="relative pb-24 flex flex-col max-w-[80rem] w-[85%] mx-auto my-0 border rounded-xl shadow-md">
+    <section className="relative pb-12 flex flex-col max-w-[80rem] w-[85%] mx-auto my-0 border rounded-xl shadow-md">
       <div className="flex flex-col border-b-2 border-gray-600 p-4">
         <h1 className="font-[600] text-[24px]">{title}</h1>
         <p className="text-[16px] font-[400]">{subTitle}</p>
