@@ -13,9 +13,8 @@ function MobileMenu({ setMobileMenu }: MenuProps) {
   return (
     <ul className="flex flex-col lg:hidden font-bold absolute top-[80px] left-0 w-full h-[calc(100vh-50px)] bg-white border-t text-black">
       {navLinks.map((item) => (
-        <Link href={item.href}>
+        <Link href={item.href} key={item.title}>
           <li
-            key={item.title}
             className="cursor-pointer py-4 px-5 border-b flex flex-col relative"
             onClick={setMobileMenu}
           >
