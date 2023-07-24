@@ -28,6 +28,7 @@ function MobileMenu({ setMobileMenu }: MenuProps) {
       <div>
         <Link href={"/contact?mode=partner-with-us"}>
           <CustomButton
+            onClick={setMobileMenu}
             title="Partner with us"
             style="rounded-lg px-[24px] py-[12px] mt-2"
           />
