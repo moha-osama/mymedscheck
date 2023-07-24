@@ -58,6 +58,7 @@ function Header() {
         {mobileMenu && (
           <MobileMenu
             setShowCategroies={() => setShowCategroies(!showCategroies)}
+            setMobileMenu={() => setMobileMenu(!mobileMenu)}
           />
         )}
         <div className="flex lg:hidden items-center gap-2 text-black">
