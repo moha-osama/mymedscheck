@@ -10,7 +10,6 @@ const page = async ({ searchParams }: any) => {
 
   const data = await getProductData(searchType, product);
   const details = await getDetails(searchType, product);
-
   return (
     <Layout data={data} details={details} searchType={searchType}>
       <div className="flex flex-col gap-8 pt-12 bg-white">

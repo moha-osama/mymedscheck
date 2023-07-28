@@ -16,6 +16,7 @@ export const searchOptionsLoader = async (searchType: any) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        // "Host-Name": " ec2-35-172-133-114.compute-1.amazonaws.com",
       },
       next: { revalidate: 60 },
     }
@@ -25,7 +26,7 @@ export const searchOptionsLoader = async (searchType: any) => {
     throw new Error("failed to fetch data");
   }
   const data = await res.json();
-  console.log(data);
+
   // fix this error later
   if (data.response_data === null) {
     return {
@@ -61,6 +62,7 @@ export const getProductData = async (searchType: string, product: string) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        // "Host-Name": " ec2-35-172-133-114.compute-1.amazonaws.com",
       },
     }
   );
@@ -87,6 +89,7 @@ export const getDetails = async (searchType: string, product: string) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        // "Host-Name": " ec2-35-172-133-114.compute-1.amazonaws.com",
       },
     }
   );
@@ -95,8 +98,8 @@ export const getDetails = async (searchType: string, product: string) => {
     throw new Error("failed to fetch data");
   }
   const data = await res.json();
-  const parsedData = JSON.parse(data.response_data);
 
+  const parsedData = JSON.parse(data.response_data);
   return parsedData;
 };
 
