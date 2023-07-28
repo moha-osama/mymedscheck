@@ -9,14 +9,13 @@ export const searchOptionsLoader = async (searchType: any) => {
   const searchByName = "/medicine/list/products";
   const searchByCompositions = "/medicine/list/compositions";
   const res = await fetch(
-    `http://${process.env.API_IPV4_ADDRESS}:5000${
+    `https://${process.env.API_IPV4_ADDRESS}:5000${
       searchType === "composition" ? searchByCompositions : searchByName
     }`,
     {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        host: "ec2.amazonaws.com",
       },
       next: { revalidate: 60 },
     }
@@ -55,14 +54,13 @@ export const getProductData = async (searchType: string, product: string) => {
   const searchByCompositions = "/medicine/composition/list?salts=";
 
   const res = await fetch(
-    `http://${process.env.API_IPV4_ADDRESS}:5000${
+    `https://${process.env.API_IPV4_ADDRESS}:5000${
       searchType === "name" ? searchByName : searchByCompositions
     }${encodedSalts}`,
     {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        host: "ec2.amazonaws.com",
       },
     }
   );
@@ -82,14 +80,13 @@ export const getDetails = async (searchType: string, product: string) => {
   const searchByCompositions = "/medicine/composition/details";
 
   const res = await fetch(
-    `http://${process.env.API_IPV4_ADDRESS}:5000${
+    `https://${process.env.API_IPV4_ADDRESS}:5000${
       searchType === "name" ? searchByName : searchByCompositions
     }/${encodedSalts}`,
     {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        host: "ec2.amazonaws.com",
       },
     }
   );
@@ -111,12 +108,11 @@ export const logActivity = async (
   country: string
 ) => {
   const res = await fetch(
-    `http://${process.env.API_IPV4_ADDRESS}:5000//log/activity`,
+    `https://${process.env.API_IPV4_ADDRESS}:5000//log/activity`,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        host: "ec2.amazonaws.com",
       },
       body: JSON.stringify({
         ip: "2.2.2.2",
