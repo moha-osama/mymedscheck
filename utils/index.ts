@@ -10,14 +10,15 @@ export const searchOptionsLoader = async (searchType: any) => {
   const searchByCompositions = "/medicine/list/compositions";
   const res = await fetch(
     `http://${process.env.API_IPV4_ADDRESS}:5000${
-      searchType === "name" ? searchByName : searchByCompositions
+      searchType === "composition" ? searchByCompositions : searchByName
     }`,
-
     {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        host: "ec2.amazonaws.com",
       },
+      next: { revalidate: 60 },
     }
   );
 
@@ -25,7 +26,7 @@ export const searchOptionsLoader = async (searchType: any) => {
     throw new Error("failed to fetch data");
   }
   const data = await res.json();
-
+  console.log(data);
   // fix this error later
   if (data.response_data === null) {
     return {
@@ -61,6 +62,7 @@ export const getProductData = async (searchType: string, product: string) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        host: "ec2.amazonaws.com",
       },
     }
   );
@@ -87,6 +89,7 @@ export const getDetails = async (searchType: string, product: string) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        host: "ec2.amazonaws.com",
       },
     }
   );
@@ -98,4 +101,35 @@ export const getDetails = async (searchType: string, product: string) => {
   const parsedData = JSON.parse(data.response_data);
 
   return parsedData;
+};
+
+export const logActivity = async (
+  ip: string,
+  city: string,
+  state: string,
+  page_name: string,
+  country: string
+) => {
+  const res = await fetch(
+    `http://${process.env.API_IPV4_ADDRESS}:5000//log/activity`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        host: "ec2.amazonaws.com",
+      },
+      body: JSON.stringify({
+        ip: "2.2.2.2",
+        city: "test",
+        state: "test",
+        country: "test",
+        page_name: "test",
+        url: "test",
+      }),
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error("failed to fetch data");
+  }
 };

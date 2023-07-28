@@ -30,11 +30,17 @@ const RecentSearches = () => {
     localStorage.removeItem("recent-searches");
   };
 
-  const rececntClickHandler = (event: React.MouseEvent<HTMLLIElement>) => {
-    const clickedItem = event.currentTarget.textContent;
-    const newPathName = updateSearchParams("search", clickedItem || "");
-    router.push(`/product/${clickedItem}${newPathName}`);
+  const navToProdPage = (prodName: string) => {
+    const newPathName = updateSearchParams("search", prodName || "");
+    router.push(`/product/${prodName}${newPathName}`);
   };
+
+  // const rececntClickHandler = (event: React.MouseEvent<HTMLLIElement>) => {
+  //   const clickedItem = event.currentTarget.textContent;
+  //   const encodeItem = encodeURIComponent(clickedItem || "");
+  //   console.log(encodeItem);
+  //   navToProdPage(encodeItem);
+  // };
 
   return (
     <div className=" flex flex-col justify-center items-center w-full min-h-[8rem] mx-auto gap-4 md:px-24">
@@ -56,7 +62,7 @@ const RecentSearches = () => {
             {processedData.map((item) => (
               <li
                 value={item}
-                onClick={rececntClickHandler}
+                // onClick={rececntClickHandler}
                 key={item}
                 className="text-sm bg-[#ffffffb0] text-center px-2 py-2 w-fit hover:bg-[#ffffff80] cursor-pointer whitespace-nowrap"
               >

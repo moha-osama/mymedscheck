@@ -12,31 +12,21 @@ interface ListProps {
   btnText: string;
   data: Data;
   searchType: any;
+  exactMatchResult: any;
+  allAvailableData: any;
+  sample: any;
 }
 
-const List = ({ title, subTitle, btnText, data, searchType }: ListProps) => {
-  //
-  // getting exact Match Result
-  const exactMatchResult = data.exact_match.result.filter(
-    (item) => item.products.length > 0
-  );
-
-  //getting generic Match Result
-  const genericMatchResultObjsArr = data.generic_match
-    .flatMap((item) => item.result) // Combine all result arrays into one
-    .filter((obj) => obj.products.length > 0); // Filter out objects with empty products array
-
-  //Combine both exact and generic Results into one array
-  const allAvailableData = [...exactMatchResult, ...genericMatchResultObjsArr];
-
-  //Get the first set of data to show it on opening
-  const sample = genericMatchResultObjsArr.map((item) => {
-    return {
-      pharmacy_name: item.pharmacy_name,
-      products: item.products.slice(0, 2),
-    };
-  });
-
+const List = ({
+  title,
+  subTitle,
+  btnText,
+  data,
+  searchType,
+  exactMatchResult,
+  allAvailableData,
+  sample,
+}: ListProps) => {
   const [shownData, setShownData] =
     useState<PharmacyProduct[]>(exactMatchResult);
   const [isClick, setisClick] = useState(false);

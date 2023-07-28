@@ -42,6 +42,7 @@ const ReactSelect = ({ products }: ReactSelectProps) => {
     const newPathName = updateSearchParams("search", prodName || "");
     router.push(`/product/${prodName}${newPathName}`);
   };
+
   const optionClickHandler = (event: React.MouseEvent<HTMLLIElement>) => {
     const clickedItem = event.currentTarget.textContent;
     addItemToLocalStorage(clickedItem || "");
