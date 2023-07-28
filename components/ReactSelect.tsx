@@ -8,17 +8,16 @@ import { updateSearchParams } from "@/utils";
 import CustomButton from "./CustomButton";
 
 interface ReactSelectProps {
-  products: { options: string[]; origin: string[] };
+  products: { options: string[]; originalForm: string[] };
   searchError: boolean;
   setSearchError: (x: boolean) => void;
 }
 
-const ReactSelect = ({ products, setSearchError }: ReactSelectProps) => {
+const ReactSelect = ({ products }: ReactSelectProps) => {
   const router = useRouter();
 
   const [input, setInput] = useState<string>("");
   const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
-
   const [select, setSelect] = useState<string | undefined>();
 
   const searchChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,34 +38,39 @@ const ReactSelect = ({ products, setSearchError }: ReactSelectProps) => {
     localStorage.setItem("recent-searches", recentsArrStrUpdated);
   };
 
+  const navToProdPage = (prodName: string) => {
+    const newPathName = updateSearchParams("search", prodName || "");
+    router.push(`/product/${prodName}${newPathName}`);
+  };
   const optionClickHandler = (event: React.MouseEvent<HTMLLIElement>) => {
     const clickedItem = event.currentTarget.textContent;
-    const originalFormIndex = products.options.findIndex(
-      (item) => item === clickedItem
-    );
-    if (!products.origin) router.push(`/not-found`);
-    const [originalForm]: any = products.origin[originalFormIndex];
+    addItemToLocalStorage(clickedItem || "");
 
-    addItemToLocalStorage(originalForm);
-
-    const newPathName = updateSearchParams("search", originalForm || "");
-    router.push(`/product/${originalForm}${newPathName}`);
-  };
-
-  const searchClickHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    if (select === undefined || input.trim() === "") {
-      setSearchError(true);
-      return;
+    if (select === "name") {
+      navToProdPage(clickedItem || "");
+    } else if (select === "composition") {
+      const originalFormIndex = products.options.findIndex(
+        (item: string) => item === clickedItem
+      );
+      const [originalForm]: any = products.originalForm[originalFormIndex];
+      navToProdPage(originalForm || "");
     }
-    const originalFormIndex = products.options.findIndex(
-      (item) => item === input
-    );
-    if (!originalFormIndex || originalFormIndex < 0) router.push(`/not-found`);
-    const [originalForm]: any = products.origin[originalFormIndex];
-    const newPathName = updateSearchParams("search", originalForm || "");
-    router.push(`/product/${originalForm}${newPathName}`);
   };
+
+  // const searchClickHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+  //   event.preventDefault();
+  //   if (select === undefined || input.trim() === "") {
+  //     setSearchError(true);
+  //     return;
+  //   }
+  //   const originalFormIndex = products.options.findIndex(
+  //     (item) => item === input
+  //   );
+  //   if (!originalFormIndex || originalFormIndex < 0) router.push(`/not-found`);
+  //   const [originalForm]: any = products.origin[originalFormIndex];
+  //   const newPathName = updateSearchParams("search", originalForm || "");
+  //   router.push(`/product/${originalForm}${newPathName}`);
+  // };
 
   return (
     <div className="flex">
@@ -83,21 +87,20 @@ const ReactSelect = ({ products, setSearchError }: ReactSelectProps) => {
             onFocus={() => setMenuIsOpen(false)}
             placeholder="Enter a medication"
             type="text"
-            className="md:w-[30rem] sm:w-[20rem] w-[8rem] h-[3rem] pl-2 sm:pl-8 placeholder:text-xs md:placeholder:text-sm focus:outline-none disabled:cursor-not-allowed disabled:bg-transparent"
+            className={`md:w-[30rem] sm:w-[20rem] w-[8rem] h-[3rem] pl-2 sm:pl-8 placeholder:text-xs md:placeholder:text-sm focus:outline-none`}
             value={input}
             onChange={searchChangeHandler}
-            disabled={!select}
           />
         </div>
         {input.trim() !== "" && (
           <div className="absolute top-[3.2rem] left-[6rem] md:left-[10rem]">
             {products?.options.filter((item: string) =>
-              item.startsWith(input.toLocaleLowerCase())
+              item.toLocaleLowerCase().startsWith(input.toLocaleLowerCase())
             ).length > 0 ? (
               <ul className="bg-white rounded-lg max-h-[20rem] overflow-y-scroll md:w-[30rem] w-[15rem] flex flex-col justify-start">
-                {products.options
+                {products?.options
                   .filter((item: string) =>
-                    item.startsWith(input.toLocaleLowerCase())
+                    item.toLocaleLowerCase().startsWith(input)
                   )
                   .map((item) => (
                     <li
@@ -119,7 +122,6 @@ const ReactSelect = ({ products, setSearchError }: ReactSelectProps) => {
         )}
       </div>
       <CustomButton
-        onClick={searchClickHandler}
         title="Search"
         style="rounded-r-lg font-bold px-[12px] md:px-[24px] py-[12px] "
       />

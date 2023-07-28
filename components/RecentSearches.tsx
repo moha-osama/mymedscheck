@@ -32,7 +32,6 @@ const RecentSearches = () => {
 
   const rececntClickHandler = (event: React.MouseEvent<HTMLLIElement>) => {
     const clickedItem = event.currentTarget.textContent;
-    console.log(clickedItem);
     const newPathName = updateSearchParams("search", clickedItem || "");
     router.push(`/product/${clickedItem}${newPathName}`);
   };
@@ -52,13 +51,14 @@ const RecentSearches = () => {
               Clear history
             </button>
           </div>
-          <ul className="grid grid-cols-3 grid-rows-2 gap-y-3 w-full h-[5rem]">
+          {/* <ul className="grid grid-cols-3 grid-rows-2 justify-items-start gap-y-3 w-full"> */}
+          <ul className="flex gap-x-2 gap-y-3 w-full">
             {processedData.map((item) => (
               <li
                 value={item}
                 onClick={rececntClickHandler}
                 key={item}
-                className="text-sm bg-[#ffffffb0] px-2 py-1  w-fit hover:bg-[#ffffff80] cursor-pointer whitespace-nowrap"
+                className="text-sm bg-[#ffffffb0] text-center px-2 py-2 w-fit hover:bg-[#ffffff80] cursor-pointer whitespace-nowrap"
               >
                 {item}
               </li>

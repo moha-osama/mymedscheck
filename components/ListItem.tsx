@@ -1,24 +1,20 @@
-import React from "react";
+"use client";
+
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Data } from "@/types";
 
 interface ListItemProps {
   btnText: string;
-  pharmacyName?: string;
-  offerPrice?: string;
-  productName?: string;
-  productUrl?: string;
-  quantity?: string | null;
-  composition?: string;
-}
-
-interface Product {
+  pharmacyName: string;
+  offerPrice: string | null;
+  productName: string;
+  productUrl: string;
+  quantity: string | null;
   composition: string;
-  offer_price: string | null;
-  product_name: string;
-  product_url: string;
-  quantity: string;
-  stock_value: string | null;
+  searchType: any;
+  data: Data;
 }
 
 const ListItem = ({
@@ -29,6 +25,8 @@ const ListItem = ({
   productUrl,
   quantity,
   composition,
+  searchType,
+  data,
 }: ListItemProps) => {
   return (
     <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-gray-500 w-full py-3">
@@ -43,7 +41,9 @@ const ListItem = ({
         </div>
         <div className="flex flex-col font-medium">
           <h1>{productName}</h1>
-          <p className="text-gray-600 text-xs">{`(${composition})`}</p>
+          <p className="text-gray-600 text-xs">{`${
+            composition ? composition : ""
+          }`}</p>
         </div>
       </div>
       <div className="flex justify-between items-end md:items-center gap-6">

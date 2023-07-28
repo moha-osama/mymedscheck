@@ -9,17 +9,19 @@ import { BsChevronDoubleDown } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
 
 interface HeroProps {
-  parsedData: { options: string[]; origin: string[] };
+  data: { options: string[]; originalForm: string[] };
 }
-
-const Hero = ({ parsedData }: HeroProps) => {
+const Hero = ({ data }: HeroProps) => {
+  //
   const [searchError, setSearchError] = useState<boolean>(false);
+
   const handleScroll = () => {
     const element = document.getElementById("guide-section");
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
   };
+
   return (
     <section className="h-[90vh]">
       <div className="h-[65%]">
@@ -51,7 +53,7 @@ const Hero = ({ parsedData }: HeroProps) => {
               </div>
               <form className="flex">
                 <ReactSelect
-                  products={parsedData}
+                  products={data}
                   searchError={searchError}
                   setSearchError={setSearchError}
                 />
@@ -100,7 +102,7 @@ const Hero = ({ parsedData }: HeroProps) => {
             onClick={handleScroll}
             title="Learn More"
             icon={<BsChevronDoubleDown className="text-xl" />}
-            style="px-2 py-4 rounded-lg"
+            style="py-2 px-8 rounded-lg"
           />
         </div>
       </div>

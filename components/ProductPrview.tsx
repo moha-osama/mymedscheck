@@ -1,31 +1,35 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { medicineStateList } from "@/constants";
 
-const ProductPrview = () => {
-  const searchParams = useSearchParams();
+interface ProductPrviewProps {
+  productName: string;
+  medicineState: string;
+}
+
+const ProductPrview = ({ medicineState, productName }: ProductPrviewProps) => {
+  const [img] = medicineStateList.filter((item) =>
+    item.title.includes(medicineState)
+  );
 
   return (
-    <div className="flex flex-col items-center md:flex-row md:pl-[6.5rem] md:gap-[5rem] md:py-[3rem] pb-[2rem] md:pb-[5rem] max-w-[90rem] mx-auto">
+    <div className="flex flex-col items-center md:flex-row md:pl-[6.5rem] md:gap-[5rem] max-w-[90rem] mx-auto">
       <div>
         <Image
           width={200}
-          height={200}
+          height={100}
           quality={100}
-          src="/pills.png"
+          src={img.img || ""}
           alt="pills"
         />
       </div>
-      <div className="flexflex-col md:justify-center gap-[1rem]">
-        <div className="flex flex-col md:flex-row items-baseline gap-3">
-          <h1 className="font-extrabold leading-normal text-2xl sm:text-[2rem]">
-            {searchParams.get("search")}
-          </h1>
-          <h3 className="font-light text-md sm:text-lg">Bisoprolol / HCTZ</h3>
-        </div>
-        <p className="font-light text-xs sm:text-sm">Used for Hypertensions</p>
+
+      <div className="flex flex-col md:flex-row items-baseline gap-3">
+        <h1 className="font-extrabold leading-normal text-2xl sm:text-[2rem]">
+          {productName}
+        </h1>
       </div>
     </div>
   );

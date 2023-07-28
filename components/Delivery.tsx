@@ -12,13 +12,12 @@ const Delivery = () => {
         {getYourMedication.map((item) => (
           <div
             key={item.title}
-            className="flex items-center
-             flex-col bg-white min-h-[30rem] w-[18rem] sm:w-[80%] sm:px-4 md:w-full py-12"
+            className="flex items-center flex-col bg-white min-h-[30rem] w-[18rem] sm:w-[80%] sm:px-4 md:w-full py-12"
           >
             <Image
               src={item.img}
               width={250}
-              height={400}
+              height={200}
               alt=""
               quality={100}
               className="md:w-[400px]"

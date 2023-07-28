@@ -1,15 +1,38 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import FormInput from "./FormInput";
 import CustomButton from "./CustomButton";
 import { useSearchParams } from "next/navigation";
-import { PartnerWithUsBenefits } from "@/constants";
+import { PartnerWithUsBenefits, countryCodes } from "@/constants";
 
 const ContactForm = () => {
   const params = useSearchParams();
   const isMessageForm = params.get("mode") === "send-a-message";
+
+  const [countries, setCountries] = useState();
+
+  useEffect(() => {
+    const getData = async () => {
+      // var headers = new Headers();
+      // headers.append("X-CSCAPI-KEY", "API_KEY");
+
+      // var requestOptions = {
+      //   method: "GET",
+      //   headers: headers,
+      //   redirect: "follow",
+      // };
+
+      fetch(
+        "https://raw.githubusercontent.com/russ666/all-countries-and-cities-json/master/countries.json"
+      )
+        .then((response) => response.text())
+        .then((result) => {})
+        .catch((error) => console.log("error", error));
+    };
+    getData();
+  }, []);
 
   return (
     <section>
@@ -58,7 +81,7 @@ const ContactForm = () => {
         </div>
         {isMessageForm ? (
           <form className="bg-white h-full px-8 py-8 flex-[2] rounded-b-lg md:rounded-r-lg md:rounded-l-none">
-            <div className="grid grid-cols-2 gap-y-12 gap-x-4 ">
+            <div className="flex flex-col sm:grid sm:grid-cols-2 gap-y-12 gap-x-4 ">
               <FormInput label="First Name" type="text" />
               <FormInput label="Last Name" type="text" />
               <FormInput label="Email" type="email" />
@@ -66,6 +89,7 @@ const ContactForm = () => {
                 label="Phone Number"
                 type="tel"
                 pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                select={countryCodes}
               />
             </div>
             <div className="py-12">
@@ -78,7 +102,7 @@ const ContactForm = () => {
           </form>
         ) : (
           <form className="bg-white h-full px-8 py-8 flex-[2] rounded-b-lg md:rounded-r-lg md:rounded-l-none">
-            <div className="grid grid-cols-2 gap-y-12 gap-x-4 ">
+            <div className="flex flex-col sm:grid sm:grid-cols-2 gap-y-12 gap-x-4 ">
               <FormInput label="First Name" type="text" />
               <FormInput label="Pharmacy name" type="text" />
               <FormInput label="Email" type="email" />
@@ -86,12 +110,13 @@ const ContactForm = () => {
                 label="Phone Number"
                 type="tel"
                 pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                select={countryCodes}
               />
               <FormInput label="Address line 1" type="text" />
               <FormInput label="Address line 2" type="text" />
-              <FormInput label="City" type="text" />
               <FormInput label="Country" type="text" />
               <FormInput label="State" type="text" />
+              <FormInput label="City" type="text" />
               <FormInput label="pincode" type="text" />
             </div>
             <div className="py-12">

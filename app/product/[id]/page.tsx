@@ -1,55 +1,30 @@
 import React from "react";
 import CustomizeSteps from "@/components/CustomizeSteps";
-import { productNavLinks } from "@/constants";
-import List from "@/components/List";
-import ProductPrview from "@/components/ProductPrview";
-import { getCompositionInfo } from "@/utils";
+import { getProductData, getDetails } from "@/utils";
+import Layout from "../Layout";
+import PricesSection from "@/components/PricesSection";
 
 const page = async ({ searchParams }: any) => {
   const product = searchParams.search;
-  const data = await getCompositionInfo(product);
+  const searchType = searchParams.option;
+
+  const data = await getProductData(searchType, product);
+  const details = await getDetails(searchType, product);
+
   return (
-    <div>
-      <ProductPrview />
-      <section className="relative flex flex-col bg-white my-4 py-12">
-        <nav className="absolute w-[20rem] overflow-scroll no-scrollbar top-[-1.5rem] productNav sm:w-[38rem] px-[0.5rem] h-[3.5rem] left-[50%] translate-x-[-50%]">
-          <ul className="flex h-full w-full items-center justify-start gap-[0.5rem]">
-            {productNavLinks.map((item) => (
-              <li
-                key={item.title}
-                className={`${
-                  item.isActive && "bg-[#D9D9D9]"
-                } py-[0.7rem] px-[1rem] whitespace-nowrap rounded-full w-[7rem] text-center hover:bg-[#D9D9D9] cursor-pointer`}
-              >
-                {item.title}
-              </li>
-            ))}
-          </ul>
-        </nav>
+    <Layout data={data} details={details} searchType={searchType}>
+      <div className="flex flex-col gap-8 pt-12 bg-white">
         <div className="py-4">
           <h1 className="text-2xl font-extrabold leading-normal text-center">
             Customize your savings on this prescription
           </h1>
         </div>
-        <div className="flex flex-col gap-8">
-          <CustomizeSteps />
-          <div className="flex flex-col gap-12">
-            <List
-              title="Home Delivery"
-              subTitle="Buy online and have it delivered to your home"
-              btnText="Grab Deal"
-              data={data}
-            />
-            <List
-              title="Local Pharmcies"
-              subTitle="Choose a pharmacy to get a coupon"
-              btnText="Get Free Savings"
-              data={data}
-            />
-          </div>
+        <CustomizeSteps details={details} data={data} searchType={searchType} />
+        <div className="flex flex-col gap-12">
+          <PricesSection data={data} searchType={searchParams} />
         </div>
-      </section>
-    </div>
+      </div>
+    </Layout>
   );
 };
 
