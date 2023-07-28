@@ -9,7 +9,7 @@ export const searchOptionsLoader = async (searchType: any) => {
   const searchByName = "/medicine/list/products";
   const searchByCompositions = "/medicine/list/compositions";
   const res = await fetch(
-    `https://${process.env.API_IPV4_ADDRESS}:5000${
+    `http://35.172.133.114:5000${
       searchType === "composition" ? searchByCompositions : searchByName
     }`,
     {
@@ -54,7 +54,7 @@ export const getProductData = async (searchType: string, product: string) => {
   const searchByCompositions = "/medicine/composition/list?salts=";
 
   const res = await fetch(
-    `https://${process.env.API_IPV4_ADDRESS}:5000${
+    `http://35.172.133.114:5000${
       searchType === "name" ? searchByName : searchByCompositions
     }${encodedSalts}`,
     {
@@ -80,7 +80,7 @@ export const getDetails = async (searchType: string, product: string) => {
   const searchByCompositions = "/medicine/composition/details";
 
   const res = await fetch(
-    `https://${process.env.API_IPV4_ADDRESS}:5000${
+    `http://35.172.133.114:5000${
       searchType === "name" ? searchByName : searchByCompositions
     }/${encodedSalts}`,
     {
@@ -100,32 +100,32 @@ export const getDetails = async (searchType: string, product: string) => {
   return parsedData;
 };
 
-export const logActivity = async (
-  ip: string,
-  city: string,
-  state: string,
-  page_name: string,
-  country: string
-) => {
-  const res = await fetch(
-    `https://${process.env.API_IPV4_ADDRESS}:5000//log/activity`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ip: "2.2.2.2",
-        city: "test",
-        state: "test",
-        country: "test",
-        page_name: "test",
-        url: "test",
-      }),
-    }
-  );
+// export const logActivity = async (
+//   ip: string,
+//   city: string,
+//   state: string,
+//   page_name: string,
+//   country: string
+// ) => {
+//   const res = await fetch(
+//     `http://${process.env.API_IPV4_ADDRESS}:5000//log/activity`,
+//     {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({
+//         ip: "2.2.2.2",
+//         city: "test",
+//         state: "test",
+//         country: "test",
+//         page_name: "test",
+//         url: "test",
+//       }),
+//     }
+//   );
 
-  if (!res.ok) {
-    throw new Error("failed to fetch data");
-  }
-};
+//   if (!res.ok) {
+//     throw new Error("failed to fetch data");
+//   }
+// };
