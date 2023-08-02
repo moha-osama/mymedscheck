@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import RecentSearches from "./RecentSearches";
 import CustomButton from "./CustomButton";
@@ -10,8 +10,9 @@ import { AiOutlineClose } from "react-icons/ai";
 
 interface HeroProps {
   data: { options: string[]; originalForm: string[] };
+  searchParams: any;
 }
-const Hero = ({ data }: HeroProps) => {
+const Hero = ({ data, searchParams }: HeroProps) => {
   //
   const [searchError, setSearchError] = useState<boolean>(false);
 
@@ -21,6 +22,23 @@ const Hero = ({ data }: HeroProps) => {
       element.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  // //fetch data in client side
+  // useEffect(() => {
+  //   const scrapeData = async () => {
+  //     const res = await fetch("/getData", {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     const data = await res.json();
+  //     const parsedData = await JSON.parse(data.response_data);
+  //     console.log(parsedData);
+  //   };
+  //   scrapeData();
+  // }, []);
+  // //fetch data in client side
 
   return (
     <section className="h-[90vh]">
@@ -58,7 +76,7 @@ const Hero = ({ data }: HeroProps) => {
                   setSearchError={setSearchError}
                 />
               </form>
-              <RecentSearches />
+              <RecentSearches searchParams={searchParams} />
             </div>
           </div>
           {searchError && (

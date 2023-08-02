@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { medicineStateList } from "@/constants";
 
@@ -21,7 +21,7 @@ const ProductPrview = ({ medicineState, productName }: ProductPrviewProps) => {
           width={200}
           height={100}
           quality={100}
-          src={img.img || ""}
+          src={img ? img.imgUrl : "/undefiend.png"}
           alt="pills"
         />
       </div>

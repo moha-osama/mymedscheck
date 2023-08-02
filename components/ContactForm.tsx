@@ -1,38 +1,126 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
 import FormInput from "./FormInput";
 import CustomButton from "./CustomButton";
 import { useSearchParams } from "next/navigation";
-import { PartnerWithUsBenefits, countryCodes } from "@/constants";
+import { countryCodes } from "@/constants";
+import { CscObj } from "@/types";
+import Advantages from "./Advantages";
 
-const ContactForm = () => {
+interface ContactFormProps {
+  cscData: CscObj;
+}
+
+const ContactForm = ({ cscData }: ContactFormProps) => {
   const params = useSearchParams();
-  const isMessageForm = params.get("mode") === "send-a-message";
+  const isMessageForm = params?.get("mode") === "send-a-message";
 
-  const [countries, setCountries] = useState();
+  //
+  const countryCodesOptions = countryCodes.map((item) => {
+    return { value: item.dial_code, label: `${item.code} - ${item.dial_code}` };
+  });
+  //
+  const uniqueCountryCodes = new Set();
+  const countries: { value: string; label: string }[] = [];
+  cscData.forEach((item) => {
+    if (!uniqueCountryCodes.has(item.country_code_iso2)) {
+      if (item.country_code_iso2 && item.country !== null) {
+        countries.push({ value: item.country_code_iso2, label: item.country });
+      }
+      uniqueCountryCodes.add(item.country_code_iso2);
+    }
+  });
+  //
+  //
+  const uniqueStateCodes = new Set();
+  const states: { value: string; label: string }[] = [];
 
-  useEffect(() => {
-    const getData = async () => {
-      // var headers = new Headers();
-      // headers.append("X-CSCAPI-KEY", "API_KEY");
+  cscData.forEach((item) => {
+    if (
+      item.country_code_iso2 &&
+      item.state_code_iso2 &&
+      item.state &&
+      !uniqueStateCodes.has(item.state_code_iso2)
+    ) {
+      states.push({ value: item.state_code_iso2, label: item.state });
+      uniqueStateCodes.add(item.state_code_iso2);
+    }
+  });
+  //
+  const uniqueCityNames = new Set();
+  const cities: { value: string; label: string }[] = [];
 
-      // var requestOptions = {
-      //   method: "GET",
-      //   headers: headers,
-      //   redirect: "follow",
-      // };
+  cscData.forEach((item) => {
+    if (
+      item.country_code_iso2 &&
+      item.state_code_iso2 &&
+      item.city &&
+      !uniqueCityNames.has(item.city)
+    ) {
+      cities.push({ value: item.city, label: item.city });
+      uniqueCityNames.add(item.city);
+    }
+  });
+  //
 
-      fetch(
-        "https://raw.githubusercontent.com/russ666/all-countries-and-cities-json/master/countries.json"
-      )
-        .then((response) => response.text())
-        .then((result) => {})
-        .catch((error) => console.log("error", error));
-    };
-    getData();
-  }, []);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const lastNameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const numberRef = useRef<HTMLInputElement>(null);
+  const messageRef = useRef<HTMLTextAreaElement>(null);
+  const pharmacyName = useRef<HTMLInputElement>(null);
+  const address1 = useRef<HTMLInputElement>(null);
+  const address2 = useRef<HTMLInputElement>(null);
+
+  const [telCode, setTelCode] = useState(null);
+  const [country, setCountry] = useState(null);
+  const [state, setState] = useState(null);
+  const [city, setCity] = useState(null);
+
+  const handleSelectTelCode = (selectedOption: any) => {
+    setTelCode(selectedOption);
+  };
+  const handleSelectCountry = (selectedOption: any) => {
+    setCountry(selectedOption);
+  };
+  const handleSelectState = (selectedOption: any) => {
+    setState(selectedOption);
+  };
+  const handleSelectCity = (selectedOption: any) => {
+    setCity(selectedOption);
+  };
+
+  const sendData = async () => {
+    const res = await fetch("/send-message", {
+      method: "POST",
+      body: JSON.stringify({
+        type: `${isMessageForm ? "contact-us" : "join-us"}`,
+        data: {
+          name: `${nameRef.current?.value} ${lastNameRef.current?.value}`,
+          email: emailRef.current?.value,
+          contact: `${telCode} ${numberRef.current?.value}`,
+          query: messageRef.current?.value,
+          address: `${address1.current?.value} - ${address2.current?.value}`,
+          state: state,
+          country: country,
+          city: city,
+          pharmacy_name: pharmacyName.current?.value,
+        },
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const response = await res.json();
+    console.log(response);
+  };
+
+  const submissionHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    sendData();
+  };
 
   return (
     <section>
@@ -82,99 +170,128 @@ const ContactForm = () => {
         {isMessageForm ? (
           <form className="bg-white h-full px-8 py-8 flex-[2] rounded-b-lg md:rounded-r-lg md:rounded-l-none">
             <div className="flex flex-col sm:grid sm:grid-cols-2 gap-y-12 gap-x-4 ">
-              <FormInput label="First Name" type="text" />
-              <FormInput label="Last Name" type="text" />
-              <FormInput label="Email" type="email" />
+              <FormInput
+                label="First Name"
+                type="text"
+                forwardedRef={nameRef}
+                id="FirstName"
+              />
+              <FormInput
+                label="Last Name"
+                type="text"
+                forwardedRef={lastNameRef}
+                id="LastName"
+              />
+              <FormInput
+                label="Email"
+                type="email"
+                forwardedRef={emailRef}
+                id="email"
+              />
               <FormInput
                 label="Phone Number"
                 type="tel"
-                pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
-                select={countryCodes}
+                select={countryCodesOptions}
+                id="PhoneNumber"
+                phone={true}
+                forwardedRef={numberRef}
+                onChangeSelect={handleSelectTelCode}
               />
             </div>
             <div className="py-12">
               <label className="text-[#8D8D8D] font-[500] text-sm">Query</label>
-              <textarea className="border-b border-[#8D8D8D] focus:outline-none px-2 py-1 w-full" />
+              <textarea
+                className="border-b border-[#8D8D8D] focus:outline-none px-2 py-1 w-full"
+                ref={messageRef}
+              />
             </div>
             <div className="flex justify-end">
-              <CustomButton title="Send message" style="py-6 px-8 rounded-lg" />
+              <CustomButton
+                onClick={submissionHandler}
+                title="Send message"
+                style="py-6 px-8 rounded-lg"
+              />
             </div>
           </form>
         ) : (
           <form className="bg-white h-full px-8 py-8 flex-[2] rounded-b-lg md:rounded-r-lg md:rounded-l-none">
             <div className="flex flex-col sm:grid sm:grid-cols-2 gap-y-12 gap-x-4 ">
-              <FormInput label="First Name" type="text" />
-              <FormInput label="Pharmacy name" type="text" />
-              <FormInput label="Email" type="email" />
+              <FormInput
+                label="Full Name"
+                type="text"
+                id="FullName"
+                forwardedRef={nameRef}
+              />
+              <FormInput
+                label="Pharmacy Name"
+                type="text"
+                id="harmacy Name"
+                forwardedRef={pharmacyName}
+              />
+              <FormInput label="Email" type="email" id="emaill" />
               <FormInput
                 label="Phone Number"
                 type="tel"
-                pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
-                select={countryCodes}
+                id="tel"
+                select={countryCodesOptions}
+                onChangeSelect={handleSelectTelCode}
+                phone={true}
+                forwardedRef={numberRef}
               />
-              <FormInput label="Address line 1" type="text" />
-              <FormInput label="Address line 2" type="text" />
-              <FormInput label="Country" type="text" />
-              <FormInput label="State" type="text" />
-              <FormInput label="City" type="text" />
-              <FormInput label="pincode" type="text" />
+              <FormInput
+                label="Address line 1"
+                type="text"
+                id="Addressline1"
+                forwardedRef={address1}
+              />
+              <FormInput
+                label="Address line 2"
+                type="text"
+                id="Addressline2"
+                forwardedRef={address2}
+              />
+              <FormInput
+                label="Country"
+                type="text"
+                select={countries}
+                onChangeSelect={handleSelectCountry}
+                id="Country"
+              />
+              <FormInput
+                label="State"
+                type="text"
+                select={states}
+                id="State"
+                onChangeSelect={handleSelectState}
+              />
+              <FormInput
+                label="City"
+                type="text"
+                select={cities}
+                id="City"
+                onChangeSelect={handleSelectCity}
+              />
+              <FormInput label="pincode" type="text" id="pincode" />
             </div>
             <div className="py-12">
               <label className="text-[#8D8D8D] font-[500] text-sm">Query</label>
-              <textarea className="border-b border-[#8D8D8D] focus:outline-none px-2 py-1 w-full" />
+              <textarea
+                className="border-b border-[#8D8D8D] focus:outline-none px-2 py-1 w-full"
+                ref={messageRef}
+              />
             </div>
             <div className="flex justify-end">
-              <CustomButton title="Send message" style="py-6 px-8 rounded-lg" />
+              <CustomButton
+                onClick={submissionHandler}
+                type="submit"
+                title="Join Us"
+                style="py-6 px-8 rounded-lg"
+              />
             </div>
           </form>
         )}
       </div>
-      {!isMessageForm && (
-        <div>
-          <div className="flex flex-col items-center justify-center gap-2 bg-[#085C60] h-[10rem]">
-            <h1 className="text-white text-xl sm:text-3xl font-extrabold">
-              Advantages of working with us
-            </h1>
-            <img src="underline-vector.png" className="w-[8rem]" />
-          </div>
-          <div className="relative bg-white">
-            {PartnerWithUsBenefits.map((item) => {
-              return (
-                <div
-                  key={item.id}
-                  className={`${
-                    item.id % 2 === 1 ? "bg-white" : "bg-[#E7F4F3]"
-                  } py-8 md:py-0 `}
-                >
-                  <div
-                    className={`flex flex-col ${
-                      item.id % 2 === 1 ? "" : "md:flex-row-reverse"
-                    } items-center  md:flex-row justify-around maxWidth`}
-                  >
-                    <div className="flex flex-col items-start justify-center max-w-[30rem]">
-                      <h1 className="text-[#043CAA] font-[600] text-[18px] md:text-[2rem]">
-                        {item.title}
-                      </h1>
-                      <p className="text-[#69727A] text-[600] text-[16px] md:text-lg max-w-[20rem]">
-                        {item.description}
-                      </p>
-                    </div>
-                    <div>
-                      <Image
-                        src={item.img}
-                        width={350}
-                        height={500}
-                        alt={item.title}
-                        quality={100}
-                      />
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
+      {!isMessageForm && <Advantages />}
     </section>
   );
 };

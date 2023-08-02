@@ -60,7 +60,6 @@ export async function POST(req: Request, res: NextRequest) {
 }
 
 //other pharmacies scrapping function
-
 // else if (url.includes("apollopharmacy")) {
 //   const name = $(".PdpWeb_heading__gUMpv").text().trim();
 //   const price = $(".MedicineInfoWeb_medicinePrice__HPf1s").text();

@@ -20,22 +20,24 @@ import spray from "../public/medicine-state/spray.png";
 import suspension from "../public/medicine-state/suspension.png";
 import syrup from "../public/medicine-state/syrup.png";
 import tablet from "../public/medicine-state/tablet.png";
+import injection from "../public/medicine-state/injection.png";
 
 export const medicineStateList = [
-  { title: "capsule", img: capsule },
-  { title: "capsule(s)", img: capsule },
-  { title: "drops", img: eyeDrop },
-  { title: "gel", img: gel },
-  { title: "granules", img: granules },
-  { title: "inhaler", img: inhaler },
-  { title: "ointment", img: ointment },
-  { title: "powder", img: powder },
-  { title: "spray", img: spray },
-  { title: "suspension", img: suspension },
-  { title: "syrup", img: syrup },
-  { title: "tablet", img: tablet },
-  { title: "tablet(s)", img: tablet },
-  { title: "tablets", img: tablet },
+  { title: "capsule", imgUrl: capsule },
+  { title: "capsule(s)", imgUrl: capsule },
+  { title: "drops", imgUrl: eyeDrop },
+  { title: "gel", imgUrl: gel },
+  { title: "granules", imgUrl: granules },
+  { title: "inhaler", imgUrl: inhaler },
+  { title: "ointment", imgUrl: ointment },
+  { title: "powder", imgUrl: powder },
+  { title: "spray", imgUrl: spray },
+  { title: "suspension", imgUrl: suspension },
+  { title: "syrup", imgUrl: syrup },
+  { title: "tablet", imgUrl: tablet },
+  { title: "tablet(s)", imgUrl: tablet },
+  { title: "tablets", imgUrl: tablet },
+  { title: "injection", imgUrl: injection },
 ];
 
 export const navLinks: { title: string; href: string }[] = [

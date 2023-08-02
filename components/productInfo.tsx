@@ -17,6 +17,7 @@ const ProductInfo = ({ details, data, searchType }: ProductInfoProps) => {
   const [name, setName] = useState("");
   const [info, setInfo] = useState([""]);
   const [infoByComp, setInfoByComp] = useState("");
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
     if (searchType === "name") {
@@ -24,27 +25,30 @@ const ProductInfo = ({ details, data, searchType }: ProductInfoProps) => {
         (item) => item.products.length > 0
       );
       const prodUrl = exactMatchResult[0].products[0].product_url;
-      const scrapeData = async () => {
-        setIsLoading(true);
-        const res = await fetch("/scrapper", {
-          method: "POST",
-          body: JSON.stringify({
-            url: prodUrl,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const products = await res.json();
+      if (prodUrl.includes("netmeds")) {
+        const scrapeData = async () => {
+          setIsLoading(true);
+          const res = await fetch("/scrapper", {
+            method: "POST",
+            body: JSON.stringify({
+              url: prodUrl,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          const products = await res.json();
 
-        setUses(products.usesListItem);
-        setSideEffects(products.sideEffectListItem);
-        setName(products.name);
-        setInfo(products.infoItem);
-
-        setIsLoading(false);
-      };
-      scrapeData();
+          setUses(products.usesListItem);
+          setSideEffects(products.sideEffectListItem);
+          setName(products.name);
+          setInfo(products.infoItem);
+          setIsLoading(false);
+        };
+        scrapeData();
+      } else {
+        setNotFound(true);
+      }
     } else {
       const obj: Details = details.filter(
         (obj) => !Object.values(obj).includes(null)
@@ -62,51 +66,67 @@ const ProductInfo = ({ details, data, searchType }: ProductInfoProps) => {
     <>
       {!isLoading ? (
         <div className="flex flex-col gap-4">
-          <div id="uses" className="flex flex-col gap-4 py-12 px-8 bg-white">
-            <h1 className="text-2xl font-bold">
-              # What is {name}-release used for?
-            </h1>
-            <ul className="flex flex-col gap-2 list-disc text-gray-500 text-md pl-12">
-              {uses.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </div>
-          <div id="about" className="flex flex-col gap-4 py-12 px-8 bg-white">
-            <h1 className="text-2xl font-bold"># About {name}</h1>
-            {searchType === "name" ? (
-              <div className="flex flex-col gap-4">
-                {info.map((item) => (
+          {notFound ? (
+            <>
+              <div className="flex flex-col justify-center items-center gap-8 pt-12 pb-8 bg-white">
+                <p>Comming Soon!</p>
+              </div>
+            </>
+          ) : (
+            <>
+              <div
+                id="uses"
+                className="flex flex-col gap-4 py-12 px-8 bg-white"
+              >
+                <h1 className="text-2xl font-bold">
+                  # What is {name}-release used for?
+                </h1>
+                <ul className="flex flex-col gap-2 list-disc text-gray-500 text-md pl-12">
+                  {uses.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+              <div
+                id="about"
+                className="flex flex-col gap-4 py-12 px-8 bg-white"
+              >
+                <h1 className="text-2xl font-bold"># About {name}</h1>
+                {searchType === "name" ? (
+                  <div className="flex flex-col gap-4">
+                    {info.map((item) => (
+                      <p
+                        key={Math.random()}
+                        className="text-gray-500 text-md max-w-[60rem]"
+                      >
+                        {item}
+                      </p>
+                    ))}
+                  </div>
+                ) : (
                   <p
                     key={Math.random()}
                     className="text-gray-500 text-md max-w-[60rem]"
                   >
-                    {item}
+                    {infoByComp}
                   </p>
-                ))}
+                )}
               </div>
-            ) : (
-              <p
-                key={Math.random()}
-                className="text-gray-500 text-md max-w-[60rem]"
+              <div
+                id="side-effects"
+                className="flex flex-col gap-4 py-12 px-8 bg-white"
               >
-                {infoByComp}
-              </p>
-            )}
-          </div>
-          <div
-            id="side-effects"
-            className="flex flex-col gap-4 py-12 px-8 bg-white"
-          >
-            <h1 className="text-2xl font-bold">
-              # What are the side effects of extended-release?
-            </h1>
-            <ul className="flex flex-col gap-2 list-disc text-gray-500 text-md pl-12">
-              {sideEffects.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </div>
+                <h1 className="text-2xl font-bold">
+                  # What are the side effects of extended-release?
+                </h1>
+                <ul className="flex flex-col gap-2 list-disc text-gray-500 text-md pl-12">
+                  {sideEffects.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            </>
+          )}
         </div>
       ) : (
         <div className="flex flex-col justify-center items-center gap-8 pt-12 bg-white">

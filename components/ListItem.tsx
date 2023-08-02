@@ -15,6 +15,7 @@ interface ListItemProps {
   composition: string;
   searchType: any;
   data: Data;
+  noImg?: boolean;
 }
 
 const ListItem = ({
@@ -27,18 +28,21 @@ const ListItem = ({
   composition,
   searchType,
   data,
+  noImg,
 }: ListItemProps) => {
   return (
     <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-gray-500 w-full py-3">
       <div className="flex flex-1 items-center gap-4">
-        <div className="relative h-8 w-8">
-          <Image
-            fill
-            src={`/home_delivery_logos/${pharmacyName}.jpg`}
-            className="rounded-full"
-            alt=""
-          />
-        </div>
+        {noImg ? (
+          <div className="relative h-8 w-8">
+            <Image
+              fill
+              src={`/home_delivery_logos/${pharmacyName}.jpg`}
+              className="rounded-full"
+              alt=""
+            />
+          </div>
+        ) : null}
         <div className="flex flex-col font-medium">
           <h1>{productName}</h1>
           <p className="text-gray-600 text-xs">{`${

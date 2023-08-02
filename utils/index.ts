@@ -9,7 +9,7 @@ export const searchOptionsLoader = async (searchType: any) => {
   const searchByName = "/medicine/list/products";
   const searchByCompositions = "/medicine/list/compositions";
   const res = await fetch(
-    `http://35.172.133.114:5000${
+    `http://44.211.191.213:5000${
       searchType === "composition" ? searchByCompositions : searchByName
     }`,
     {
@@ -18,7 +18,6 @@ export const searchOptionsLoader = async (searchType: any) => {
         "Content-Type": "application/json",
         // "Host-Name": " ec2-35-172-133-114.compute-1.amazonaws.com",
       },
-      next: { revalidate: 60 },
     }
   );
 
@@ -55,7 +54,7 @@ export const getProductData = async (searchType: string, product: string) => {
   const searchByCompositions = "/medicine/composition/list?salts=";
 
   const res = await fetch(
-    `http://35.172.133.114:5000${
+    `http://44.211.191.213:5000${
       searchType === "name" ? searchByName : searchByCompositions
     }${encodedSalts}`,
     {
@@ -82,7 +81,7 @@ export const getDetails = async (searchType: string, product: string) => {
   const searchByCompositions = "/medicine/composition/details";
 
   const res = await fetch(
-    `http://35.172.133.114:5000${
+    `http://44.211.191.213:5000${
       searchType === "name" ? searchByName : searchByCompositions
     }/${encodedSalts}`,
     {
@@ -103,32 +102,42 @@ export const getDetails = async (searchType: string, product: string) => {
   return parsedData;
 };
 
-// export const logActivity = async (
-//   ip: string,
-//   city: string,
-//   state: string,
-//   page_name: string,
-//   country: string
-// ) => {
-//   const res = await fetch(
-//     `http://${process.env.API_IPV4_ADDRESS}:5000//log/activity`,
-//     {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({
-//         ip: "2.2.2.2",
-//         city: "test",
-//         state: "test",
-//         country: "test",
-//         page_name: "test",
-//         url: "test",
-//       }),
-//     }
-//   );
+export const getOfflinePharmaciesData = async (
+  searchType: string,
+  product: string
+) => {
+  const encodedSalts = encodeURIComponent(product);
 
-//   if (!res.ok) {
-//     throw new Error("failed to fetch data");
-//   }
-// };
+  const searchByName = "/medicine/local/searchbyname";
+  const searchByCompositions = "/medicine/local/searchbycomposition?salts";
+  const queries = `city=sonipat&state=HR&country=IN&latitude=28.994553&longitude=77.023975&radius=5`;
+
+  const res = await fetch(
+    `http://44.211.191.213:5000${
+      searchType === "name" ? searchByName : searchByCompositions
+    }/${encodedSalts}?${queries}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        // "Host-Name": " ec2-35-172-133-114.compute-1.amazonaws.com",
+      },
+    }
+  );
+  const data = await res.json();
+  const parsedData = JSON.parse(data.response_data);
+  return parsedData;
+};
+
+export const getCSCData = async () => {
+  const res = await fetch(`http://44.211.191.213:5000/list/csc`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      // "Host-Name": " ec2-35-172-133-114.compute-1.amazonaws.com",
+    },
+  });
+  const data = await res.json();
+  const parsedData = JSON.parse(data.response_data);
+  return parsedData;
+};

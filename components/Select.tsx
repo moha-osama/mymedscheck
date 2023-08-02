@@ -11,6 +11,7 @@ interface SelectProps {
   setMenuIsOpen: (x: boolean) => void;
   select: string | undefined;
   setSelect: (select: string | undefined) => void;
+  searchError: boolean;
 }
 
 const optionsList: { label: string; value: string }[] = [
@@ -23,11 +24,12 @@ const Select = ({
   setMenuIsOpen,
   select,
   setSelect,
+  searchError,
 }: SelectProps) => {
   const router = useRouter();
 
   const searchParams = useSearchParams();
-  const option = searchParams.get("option");
+  const option = searchParams?.get("option");
 
   const selectChangeHandler = (event: React.MouseEvent<HTMLLIElement>) => {
     const value = event.currentTarget.getAttribute("value") || "";
@@ -53,14 +55,14 @@ const Select = ({
       {menuIsOpen && (
         <ul
           onMouseLeave={() => setMenuIsOpen(false)}
-          className="bg-white absolute bottom-[-6.5rem] w-[250px] left-0  text-black shadow-lg rounded-md"
+          className={`absolute bottom-[-6.5rem] w-[250px] left-0  text-black shadow-lg rounded-md`}
         >
           {optionsList.map((item) => (
             <li
               key={item.value}
               value={item.value}
               onClick={selectChangeHandler}
-              className="h-12 flex justify-between items-center px-3 hover:bg-[#085C60] hover:text-white text-gray-500 hover:cursor-pointer first:hover:rounded-t-md last:hover:rounded-b-md"
+              className="bg-white h-12 flex justify-between items-center px-3 hover:bg-[#085C60] hover:text-white text-gray-500 hover:cursor-pointer first:hover:rounded-t-md last:hover:rounded-b-md"
             >
               {item.label}
             </li>

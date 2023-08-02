@@ -27,12 +27,12 @@ const Layout = ({ data, details, children, searchType }: LayoutProps) => {
         setMedicineState("");
       }
     } else {
-      const obj: Details = details.filter(
-        (obj: any) => !Object.values(obj).includes(null)
-      )[0];
-      const type = obj.type;
-      setProdName(obj.composition_name);
-      setMedicineState(type);
+      details.map((obj: Details) => {
+        const type = obj.type ? obj.type : "No Data";
+        setMedicineState(type);
+        const name = obj.composition_name;
+        setProdName(name);
+      })[0];
     }
   }, []);
 

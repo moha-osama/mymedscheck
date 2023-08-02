@@ -15,6 +15,7 @@ interface ListProps {
   exactMatchResult: any;
   allAvailableData: any;
   sample: any;
+  noImg?: boolean;
 }
 
 const List = ({
@@ -26,7 +27,9 @@ const List = ({
   exactMatchResult,
   allAvailableData,
   sample,
+  noImg,
 }: ListProps) => {
+  //
   const [shownData, setShownData] =
     useState<PharmacyProduct[]>(exactMatchResult);
   const [isClick, setisClick] = useState(false);
@@ -57,6 +60,7 @@ const List = ({
                   composition={prod.composition}
                   searchType={searchType}
                   data={data}
+                  noImg={noImg}
                 />
               </div>
             </li>
@@ -86,6 +90,7 @@ const List = ({
                       composition={prod.composition}
                       searchType={searchType}
                       data={data}
+                      noImg={noImg}
                     />
                   </div>
                 </li>

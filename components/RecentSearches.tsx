@@ -4,7 +4,11 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { updateSearchParams } from "@/utils";
 
-const RecentSearches = () => {
+interface RecentSearchesProps {
+  searchParams: any;
+}
+
+const RecentSearches = ({ searchParams }: RecentSearchesProps) => {
   const router = useRouter();
   const [processedData, setProcessedData] = useState<string[]>([]);
   useEffect(() => {
@@ -14,14 +18,20 @@ const RecentSearches = () => {
     const processedStrings: any = {};
     const processedDataArr: string[] = [];
 
+    const MAX_RECENT_SEARCHES = 6;
+
     for (const str of recentSearchesArr) {
       if (!processedStrings[str]) {
         const mappedValue = str;
-        processedDataArr.push(mappedValue);
+        processedDataArr.unshift(mappedValue); // add new item at the beginning of the array
         processedStrings[str] = true;
+
+        if (processedDataArr.length > MAX_RECENT_SEARCHES) {
+          // remove the oldest item if the array exceeds 6 elements
+          processedDataArr.pop();
+        }
       }
     }
-
     setProcessedData(processedDataArr);
   }, []);
 
@@ -35,12 +45,11 @@ const RecentSearches = () => {
     router.push(`/product/${prodName}${newPathName}`);
   };
 
-  // const rececntClickHandler = (event: React.MouseEvent<HTMLLIElement>) => {
-  //   const clickedItem = event.currentTarget.textContent;
-  //   const encodeItem = encodeURIComponent(clickedItem || "");
-  //   console.log(encodeItem);
-  //   navToProdPage(encodeItem);
-  // };
+  const rececntClickHandler = (event: React.MouseEvent<HTMLLIElement>) => {
+    const clickedItem = event.currentTarget.textContent;
+    const encodeItem = encodeURIComponent(clickedItem || "");
+    navToProdPage(encodeItem);
+  };
 
   return (
     <div className=" flex flex-col justify-center items-center w-full min-h-[8rem] mx-auto gap-4 md:px-24">
@@ -57,14 +66,14 @@ const RecentSearches = () => {
               Clear history
             </button>
           </div>
-          {/* <ul className="grid grid-cols-3 grid-rows-2 justify-items-start gap-y-3 w-full"> */}
-          <ul className="flex gap-x-2 gap-y-3 w-full">
+          <ul className="w-[22rem] sm:w-[25rem] grid grid-cols-3 grid-rows-2 justify-items-start gap-y-3 gap-x-2">
+            {/* <ul className="flex gap-x-2 gap-y-3 w-full bg-black"> */}
             {processedData.map((item) => (
               <li
                 value={item}
-                // onClick={rececntClickHandler}
+                onClick={rececntClickHandler}
                 key={item}
-                className="text-sm bg-[#ffffffb0] text-center px-2 py-2 w-fit hover:bg-[#ffffff80] cursor-pointer whitespace-nowrap"
+                className="text-sm bg-[#ffffffb0]  text-left py-1 px-2 w-[7rem] sm:min-w-[8rem] h-[1.7rem]  hover:bg-[#ffffff80] cursor-pointer whitespace-nowrap overflow-hidden overflow-ellipsis"
               >
                 {item}
               </li>

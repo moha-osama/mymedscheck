@@ -1,6 +1,6 @@
 import React from "react";
 import CustomizeSteps from "@/components/CustomizeSteps";
-import { getProductData, getDetails } from "@/utils";
+import { getProductData, getDetails, getOfflinePharmaciesData } from "@/utils";
 import Layout from "../Layout";
 import PricesSection from "@/components/PricesSection";
 
@@ -10,6 +10,11 @@ const page = async ({ searchParams }: any) => {
 
   const data = await getProductData(searchType, product);
   const details = await getDetails(searchType, product);
+  const offlinePharmaciesDetails = await getOfflinePharmaciesData(
+    searchType,
+    product
+  );
+
   return (
     <Layout data={data} details={details} searchType={searchType}>
       <div className="flex flex-col gap-8 pt-12 bg-white">
@@ -20,7 +25,11 @@ const page = async ({ searchParams }: any) => {
         </div>
         <CustomizeSteps details={details} data={data} searchType={searchType} />
         <div className="flex flex-col gap-12">
-          <PricesSection data={data} searchType={searchParams} />
+          <PricesSection
+            offlinePharmaciesDetails={offlinePharmaciesDetails}
+            data={data}
+            searchType={searchParams}
+          />
         </div>
       </div>
     </Layout>
