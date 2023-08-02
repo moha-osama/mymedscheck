@@ -17,6 +17,7 @@ export const searchOptionsLoader = async (searchType: any) => {
       headers: {
         "Content-Type": "application/json",
         // "Host-Name": " ec2-35-172-133-114.compute-1.amazonaws.com",
+        cache: "no-cache",
       },
     }
   );
