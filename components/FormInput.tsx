@@ -1,3 +1,5 @@
+"use client";
+
 import React, { forwardRef } from "react";
 import Select from "react-select";
 
@@ -71,7 +73,7 @@ const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
                   type={type}
                   pattern={pattern}
                   className={`border-b border-[#8D8D8D] sm:w-full focus:outline-none ${"px-2"}`}
-                  // required
+                  required
                   ref={forwardedRef}
                 />
               )}
@@ -84,7 +86,7 @@ const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
               pattern={pattern}
               className={`border-b border-[#8D8D8D] sm:w-full focus:outline-none ${"px-2"} py-[0.4rem] `}
               ref={forwardedRef}
-              // required
+              required
             />
           )}
         </div>
