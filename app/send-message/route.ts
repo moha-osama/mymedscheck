@@ -8,6 +8,8 @@ export async function POST(req: Request) {
   const subscribe = "/subscribe";
   const defaultUrl = "/default-url"; // add default URL
 
+  console.log(data);
+
   const url =
     type === "contact-us"
       ? contactUs
@@ -17,12 +19,17 @@ export async function POST(req: Request) {
       ? subscribe
       : defaultUrl; // use default URL if type is not recognized
 
-  const res = await fetch(`http://44.211.191.213:5000${url}`, {
+  const res = await fetch(`http://34.207.163.81:5000${url}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      name: "test",
+      email: "test",
+      contact: "test",
+      query: "test",
+    }),
   });
 
   try {

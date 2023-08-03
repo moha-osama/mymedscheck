@@ -90,7 +90,6 @@ export const getDetails = async (searchType: string, product: string) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        // "Host-Name": " ec2-35-172-133-114.compute-1.amazonaws.com",
         cache: "no-cache",
       },
     }
@@ -100,7 +99,6 @@ export const getDetails = async (searchType: string, product: string) => {
     throw new Error("failed to fetch data");
   }
   const data = await res.json();
-
   const parsedData = JSON.parse(data.response_data);
   return parsedData;
 };
@@ -109,7 +107,6 @@ export const getOfflinePharmaciesData = async (
   searchType: string,
   product: string
 ) => {
-  console.log(searchType, product);
   const encodedSalts = encodeURIComponent(product);
 
   const searchByName = "/medicine/local/searchbyname";
@@ -127,8 +124,12 @@ export const getOfflinePharmaciesData = async (
       },
     }
   );
+
+  if (!res.ok) {
+    throw new Error("failed to fetch data");
+  }
+
   const data = await res.json();
-  console.log(data);
   const parsedData = JSON.parse(data.response_data);
   return parsedData;
 };
