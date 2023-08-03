@@ -83,3 +83,15 @@ export type CscObj = {
   city_code_iso2: string | null;
   postal_code: string | null;
 }[];
+
+export type formData = {
+  name: string;
+  email: string;
+  contact: string;
+  query: string;
+  address: string;
+  state: string;
+  country: string;
+  city: string;
+  pharmacy_name: string;
+};

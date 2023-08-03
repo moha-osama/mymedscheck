@@ -8,8 +8,6 @@ export async function POST(req: Request) {
   const subscribe = "/subscribe";
   const defaultUrl = "/default-url"; // add default URL
 
-  console.log(data);
-
   const url =
     type === "contact-us"
       ? contactUs
@@ -19,22 +17,31 @@ export async function POST(req: Request) {
       ? subscribe
       : defaultUrl; // use default URL if type is not recognized
 
+  const formData = new FormData();
+
+  if (type !== "subscribe") {
+    formData.append("name", data.name);
+    formData.append("email", data.email);
+    formData.append("contact", data.contact);
+    formData.append("query", data.query);
+  }
+  if (type === "join-us") {
+    formData.append("address", data.address);
+    formData.append("state", data.state);
+    formData.append("country", data.country);
+    formData.append("city", data.city);
+    formData.append("pharmacy_name", data.pharmacy_name);
+  } else if (type === "subscribe") {
+    formData.append("email", data.email);
+  }
+
   const res = await fetch(`http://34.207.163.81:5000${url}`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      name: "test",
-      email: "test",
-      contact: "test",
-      query: "test",
-    }),
+    body: formData,
   });
 
   try {
     const data = await res.json();
-    console.log(data);
     return NextResponse.json(data);
   } catch (error: any) {
     return NextResponse.json({ error: `An error occured ${error.message}` });

@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Data } from "@/types";
+import { updateSearchParams } from "@/utils";
 
 interface ListItemProps {
   btnText: string;
@@ -23,13 +24,23 @@ const ListItem = ({
   pharmacyName,
   offerPrice,
   productName,
-  productUrl,
   quantity,
   composition,
-  searchType,
-  data,
   noImg,
+  searchType,
+  productUrl,
 }: ListItemProps) => {
+  //
+  const router = useRouter();
+  const redirectHandler = () => {
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set("product", productName);
+    const newPathName = updateSearchParams;
+    router.push(
+      `/redirect?product=${productName}&url=${productUrl}&pharmacy=${pharmacyName}&quantity=${quantity}&offerPrice=${offerPrice}&composition=${composition}`
+    );
+  };
+
   return (
     <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-gray-500 w-full py-3">
       <div className="flex flex-1 items-center gap-4">
@@ -68,12 +79,12 @@ const ListItem = ({
             )}
           </div>
         </div>
-
-        <Link href={`${productUrl}`}>
-          <button className="border border-[#085C60] text-[#085C60] font-medium py-[0.5rem] px-[1rem] rounded-md text-[16px] hover:bg-[#085C60] hover:text-white">
-            {btnText}
-          </button>
-        </Link>
+        <button
+          onClick={redirectHandler}
+          className="border border-[#085C60] text-[#085C60] font-medium py-[0.5rem] px-[1rem] rounded-md text-[16px] hover:bg-[#085C60] hover:text-white"
+        >
+          {btnText}
+        </button>
       </div>
     </div>
   );

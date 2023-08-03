@@ -65,6 +65,7 @@ const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
                 options={select}
                 className="flex-1 min-w-[9rem]"
                 onChange={handleSelectChange}
+                required
               />
               {phone && (
                 <input

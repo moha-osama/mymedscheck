@@ -44,17 +44,19 @@ const PricesSection = ({
             btnText="Grab Deal"
             data={data}
           />
-          <List
-            noImg={false}
-            sample={offlineDataSample}
-            exactMatchResult={offlineDataExactMatch}
-            allAvailableData={offlineDataAllAvailableData}
-            title="Store Pickup"
-            subTitle="Select your nearest store to pickup your prescription"
-            btnText="Go to store"
-            data={data}
-            searchType={searchType}
-          />
+          {offlineDataAllAvailableData.length !== 0 && (
+            <List
+              noImg={false}
+              sample={offlineDataSample}
+              exactMatchResult={offlineDataExactMatch}
+              allAvailableData={offlineDataAllAvailableData}
+              title="Store Pickup"
+              subTitle="Select your nearest store to pickup your prescription"
+              btnText="Go to store"
+              data={data}
+              searchType={searchType}
+            />
+          )}
         </>
       ) : (
         <div className="flex flex-col justify-center items-center gap-8 pt-12 bg-white">
