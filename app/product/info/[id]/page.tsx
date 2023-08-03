@@ -1,7 +1,6 @@
 import React from "react";
 import { getDetails, getProductData } from "@/utils";
 import ProductInfo from "@/components/productInfo";
-import ProductPrview from "@/components/ProductPrview";
 import Layout from "../../Layout";
 
 const page = async ({ searchParams }: any) => {

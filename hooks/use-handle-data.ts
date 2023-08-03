@@ -3,6 +3,7 @@ import { Data, OfflineData } from "@/types";
 
 export function useHandleData(data: Data, searchType: any) {
   //
+
   const [exactMatch, setExactMatch] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   //
@@ -82,7 +83,6 @@ export function useHandleData(data: Data, searchType: any) {
         };
         scrapeData();
       } else {
-        // console.log("no");
       }
     } else {
     }
@@ -104,46 +104,33 @@ export function useHandleData(data: Data, searchType: any) {
 }
 
 export function useHandleOfflineData(data: OfflineData, searchType: any) {
-  //
   const [exactMatch, setExactMatch] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  //
-  // getting exact Match Result
+
   const exactMatchResult = data.exact_match.result.filter(
     (item) => item.products.length !== 0
   );
-
-  //getting generic Match Result
   const genericMatchResultObjsArr = data.generic_match.result.filter(
     (item) => item.products.length !== 0
   );
-
-  //Get the first set of data to show it on opening
   const sample = genericMatchResultObjsArr.map((item) => {
     return {
       pharmacy_name: item.pharmacy_name,
       products: item.products.slice(0, 2),
     };
   });
+  const allAvailableData = [...exactMatchResult, ...genericMatchResultObjsArr];
 
-  //
   useEffect(() => {
-    if (searchType.option === "name") {
-    } else {
+    if (exactMatchResult.length !== 0) {
+      const exactMatchSample = exactMatchResult.map((item) => {
+        return {
+          pharmacy_name: item.pharmacy_name,
+          products: item.products.slice(0, 2),
+        };
+      });
+      setExactMatch(exactMatchSample);
     }
-  });
-  //
+  }, [exactMatchResult]);
 
-  //Combine both exact and generic Results into one array
-  const allAvailableData = [...exactMatch, ...genericMatchResultObjsArr];
-  if (exactMatch.length === 0) {
-    const sample: any = exactMatchResult.map((item) => {
-      return {
-        pharmacy_name: item.pharmacy_name,
-        products: item.products.slice(0, 2),
-      };
-    });
-    setExactMatch(sample);
-  }
   return { sample, exactMatch, allAvailableData };
 }

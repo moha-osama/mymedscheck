@@ -9,7 +9,7 @@ export const searchOptionsLoader = async (searchType: any) => {
   const searchByName = "/medicine/list/products";
   const searchByCompositions = "/medicine/list/compositions";
   const res = await fetch(
-    `http://44.211.191.213:5000${
+    `http://34.207.163.81:5000${
       searchType === "composition" ? searchByCompositions : searchByName
     }`,
     {
@@ -55,7 +55,7 @@ export const getProductData = async (searchType: string, product: string) => {
   const searchByCompositions = "/medicine/composition/list?salts=";
 
   const res = await fetch(
-    `http://44.211.191.213:5000${
+    `http://34.207.163.81:5000${
       searchType === "name" ? searchByName : searchByCompositions
     }${encodedSalts}`,
     {
@@ -63,6 +63,7 @@ export const getProductData = async (searchType: string, product: string) => {
       headers: {
         "Content-Type": "application/json",
         // "Host-Name": " ec2-35-172-133-114.compute-1.amazonaws.com",
+        cache: "no-cache",
       },
     }
   );
@@ -82,7 +83,7 @@ export const getDetails = async (searchType: string, product: string) => {
   const searchByCompositions = "/medicine/composition/details";
 
   const res = await fetch(
-    `http://44.211.191.213:5000${
+    `http://34.207.163.81:5000${
       searchType === "name" ? searchByName : searchByCompositions
     }/${encodedSalts}`,
     {
@@ -90,6 +91,7 @@ export const getDetails = async (searchType: string, product: string) => {
       headers: {
         "Content-Type": "application/json",
         // "Host-Name": " ec2-35-172-133-114.compute-1.amazonaws.com",
+        cache: "no-cache",
       },
     }
   );
@@ -107,35 +109,37 @@ export const getOfflinePharmaciesData = async (
   searchType: string,
   product: string
 ) => {
+  console.log(searchType, product);
   const encodedSalts = encodeURIComponent(product);
 
   const searchByName = "/medicine/local/searchbyname";
-  const searchByCompositions = "/medicine/local/searchbycomposition?salts";
+  const searchByCompositions = "/medicine/local/searchbycomposition?salts=";
   const queries = `city=sonipat&state=HR&country=IN&latitude=28.994553&longitude=77.023975&radius=5`;
 
   const res = await fetch(
-    `http://44.211.191.213:5000${
+    `http://34.207.163.81:5000${
       searchType === "name" ? searchByName : searchByCompositions
     }/${encodedSalts}?${queries}`,
     {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        // "Host-Name": " ec2-35-172-133-114.compute-1.amazonaws.com",
       },
     }
   );
   const data = await res.json();
+  console.log(data);
   const parsedData = JSON.parse(data.response_data);
   return parsedData;
 };
 
 export const getCSCData = async () => {
-  const res = await fetch(`http://44.211.191.213:5000/list/csc`, {
+  const res = await fetch(`http://34.207.163.81:5000/list/csc`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       // "Host-Name": " ec2-35-172-133-114.compute-1.amazonaws.com",
+      cache: "no-cache",
     },
   });
   const data = await res.json();
