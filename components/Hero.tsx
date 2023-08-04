@@ -23,23 +23,6 @@ const Hero = ({ data, searchParams }: HeroProps) => {
     }
   };
 
-  // //fetch data in client side
-  // useEffect(() => {
-  //   const scrapeData = async () => {
-  //     const res = await fetch("/getData", {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     const data = await res.json();
-  //     const parsedData = await JSON.parse(data.response_data);
-  //     console.log(parsedData);
-  //   };
-  //   scrapeData();
-  // }, []);
-  // //fetch data in client side
-
   return (
     <section className="h-[90vh]">
       <div className="h-[65%]">

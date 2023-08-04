@@ -118,9 +118,9 @@ const ContactForm = ({ cscData }: ContactFormProps) => {
         "Content-Type": "application/json",
       },
     });
-    const response = await res.json();
+    // const response = await res.json();
     setSending(false);
-    if (response) {
+    if (true) {
       setSent(true);
 
       const redirectTimer = setTimeout(() => {

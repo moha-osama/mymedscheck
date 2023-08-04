@@ -15,7 +15,7 @@ interface SelectProps {
 }
 
 const optionsList: { label: string; value: string }[] = [
-  { label: "Medication Name", value: "name" },
+  { label: "Medication Name", value: "composition" },
   { label: "Medication Composition", value: "composition" },
 ];
 

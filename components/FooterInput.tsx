@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 interface FooterInputProps {
   style?: string;
@@ -7,6 +7,7 @@ interface FooterInputProps {
 
 const FooterInput = ({ style }: FooterInputProps) => {
   const email = useRef(null);
+  const [sent, setSent] = useState(true);
 
   const sendData = async () => {
     fetch("/send-message", {
@@ -38,7 +39,7 @@ const FooterInput = ({ style }: FooterInputProps) => {
       />
       <button
         type="submit"
-        className={`bg-[#043CAA] rounded-r-full p-2  ${style}`}
+        className={`bg-[#043CAA] rounded-r-full p-2 ${style}`}
       >
         Subscribe
       </button>

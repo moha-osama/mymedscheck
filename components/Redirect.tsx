@@ -10,7 +10,6 @@ interface RedirectProps {
 }
 
 const Redirect = ({ searchParams }: RedirectProps) => {
-  console.log(searchParams);
   return (
     <div className="flex items-center justify-center my-4">
       <div className="bg-white w-[90%] h-[90%] rounded-lg shadow-lg max-w-[90rem] flex flex-col sm:gap-12">
