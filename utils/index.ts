@@ -9,7 +9,7 @@ export const searchOptionsLoader = async (searchType: any) => {
   const searchByName = "/medicine/list/products";
   const searchByCompositions = "/medicine/list/compositions";
   const res = await fetch(
-    `http://34.207.163.81:5000${
+    `http://100.26.102.21:5000${
       searchType === "composition" ? searchByCompositions : searchByName
     }`,
     {
@@ -55,7 +55,7 @@ export const getProductData = async (searchType: string, product: string) => {
   const searchByCompositions = "/medicine/composition/list?salts=";
 
   const res = await fetch(
-    `http://34.207.163.81:5000${
+    `http://100.26.102.21:5000${
       searchType === "name" ? searchByName : searchByCompositions
     }${encodedSalts}`,
     {
@@ -83,7 +83,7 @@ export const getDetails = async (searchType: string, product: string) => {
   const searchByCompositions = "/medicine/composition/details";
 
   const res = await fetch(
-    `http://34.207.163.81:5000${
+     `http://100.26.102.21:5000${
       searchType === "name" ? searchByName : searchByCompositions
     }/${encodedSalts}`,
     {
@@ -135,7 +135,7 @@ export const getOfflinePharmaciesData = async (
 };
 
 export const getCSCData = async () => {
-  const res = await fetch(`http://34.207.163.81:5000/list/csc`, {
+  const res = await fetch( `http://100.26.102.21:5000/list/csc`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
